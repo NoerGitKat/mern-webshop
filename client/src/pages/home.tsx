@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import Product from "../components/Product";
-import products from "../products";
+import { IProduct } from "../types/products";
 
 interface HomeProps {}
 
 const HomePage: React.FC<HomeProps> = () => {
+  const [products, setProducts] = useState<IProduct[]>([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch("http://localhost:5000/api/products");
+        if (response.ok) {
+          const products = await response.json();
+          setProducts(products);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
   return (
     <>
       <h1>Latest Products</h1>
       <Row>
-        {products.map((product) => (
+        {products.map((product: IProduct) => (
           <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
             <Product
               _id={product._id}

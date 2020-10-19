@@ -1,10 +1,10 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { ProductProps } from "./../types/products";
+import { IProduct } from "./../types/products";
 import Rating from "./Rating";
 
-const Product: React.FC<ProductProps> = ({
+const Product: React.FC<IProduct> = ({
   _id,
   name,
   image,

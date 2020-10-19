@@ -1,4 +1,4 @@
-interface ProductProps {
+interface IProduct {
   _id: string;
   name: string;
   image: string;
@@ -11,4 +11,4 @@ interface ProductProps {
   numReviews: number;
 }
 
-export type { ProductProps };
+export type { IProduct };

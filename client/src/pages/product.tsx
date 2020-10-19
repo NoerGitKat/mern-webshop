@@ -4,11 +4,11 @@ import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
 import products from "../products";
 
-interface ProductProps {
+interface IProduct {
   match: { params: { id: string } };
 }
 
-const ProductPage: React.FC<ProductProps> = ({ match }) => {
+const ProductPage: React.FC<IProduct> = ({ match }) => {
   const productId = match.params.id;
 
   const foundProduct = products.find((product) => product._id === productId);

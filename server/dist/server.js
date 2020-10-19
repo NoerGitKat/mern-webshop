@@ -4,8 +4,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const cors_1 = __importDefault(require("cors"));
 const products_router_1 = __importDefault(require("./routes/products-router"));
 const app = express_1.default();
+// Middlewares
+app.use(cors_1.default());
 // Routes
 app.use("/api/products/", products_router_1.default);
 app.listen(5000, () => {

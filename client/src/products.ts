@@ -1,6 +1,6 @@
-import { ProductProps } from "./types/products";
+import { IProduct } from "./types/products";
 
-const products: ProductProps[] = [
+const products: IProduct[] = [
   {
     _id: "1",
     name: "Airpods Wireless Bluetooth Headphones",
