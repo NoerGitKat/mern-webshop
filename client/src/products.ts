@@ -1,17 +1,6 @@
-interface Product {
-  _id: string;
-  name: string;
-  image: string;
-  description: string;
-  brand: string;
-  category: string;
-  price: number;
-  countInStock: number;
-  rating: number;
-  numReviews: number;
-}
+import { ProductProps } from "./types/products";
 
-const products: Product[] = [
+const products: ProductProps[] = [
   {
     _id: "1",
     name: "Airpods Wireless Bluetooth Headphones",
