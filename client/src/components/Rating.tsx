@@ -1,10 +1,9 @@
 import React from "react";
-import { isConstructSignatureDeclaration } from "typescript";
 
 interface RatingProps {
   rating: number;
   text: string;
-  color: string;
+  color?: string;
 }
 
 const Rating: React.FC<RatingProps> = ({ rating, text, color }) => {
@@ -74,6 +73,10 @@ const Rating: React.FC<RatingProps> = ({ rating, text, color }) => {
       {text}
     </div>
   );
+};
+
+Rating.defaultProps = {
+  color: "#F8E825",
 };
 
 export default Rating;
