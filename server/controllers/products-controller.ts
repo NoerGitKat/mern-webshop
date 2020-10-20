@@ -1,19 +1,34 @@
 import { Request, Response } from "express";
-import products from "../data/products";
+import Product from "../models/Product";
 
-const getProducts = (req: Request, res: Response): void => {
-  res.send(JSON.stringify(products));
+// @desc Fetch all products
+// @route GET /api/products
+// @access Public
+const getProducts = async (req: Request, res: Response): Promise<void> => {
+  try {
+    const products = await Product.find({});
+    res.status(200).json(products);
+  } catch (error) {
+    res.status(500).json({ msg: `Can't fetch products. ${error.message}` });
+  }
 };
 
-const getSingleProduct = (req: Request, res: Response): void => {
+// @desc Fetch single product by id
+// @route GET /api/products/:id
+// @access Public
+const getSingleProduct = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
 
-  const foundProduct = products.find((product) => product._id === id);
+  try {
+    const foundProduct = await Product.findById(id);
 
-  if (foundProduct) {
-    res.send(JSON.stringify(foundProduct));
-  } else {
-    res.send({});
+    if (foundProduct) {
+      res.status(200).json(foundProduct);
+    } else {
+      res.status(404).json({ msg: "Couldn't find this product." });
+    }
+  } catch (error) {
+    res.status(500).json({ msg: `Can't fetch this product. ${error.message}` });
   }
 };
 

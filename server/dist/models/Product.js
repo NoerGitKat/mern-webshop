@@ -14,7 +14,9 @@ const reviewSchema = new Schema({
         required: true,
         ref: "User",
     },
-}, { timestamps: true });
+}, {
+    timestamps: true,
+});
 const productSchema = new Schema({
     user: {
         type: mongoose_1.default.Schema.Types.ObjectId,
@@ -41,12 +43,12 @@ const productSchema = new Schema({
         type: String,
         required: true,
     },
-    avgRating: {
+    reviews: [reviewSchema],
+    rating: {
         type: Number,
         required: true,
         default: 0,
     },
-    reviews: [reviewSchema],
     numReviews: {
         type: Number,
         required: true,
@@ -62,6 +64,8 @@ const productSchema = new Schema({
         required: true,
         default: 0,
     },
-}, { timestamps: true });
+}, {
+    timestamps: true,
+});
 const Product = mongoose_1.default.model("Product", productSchema);
 exports.default = Product;

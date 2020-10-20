@@ -31,8 +31,10 @@ const importData = () => __awaiter(void 0, void 0, void 0, function* () {
         // 2. Insert users
         const userDocs = yield User_1.default.insertMany(users_1.default);
         const adminUserId = userDocs[0]._id;
-        // 3. Add adminUserId to each product
-        const sampleProducts = products_1.default.map((product) => (Object.assign(Object.assign({}, product), { user: adminUserId })));
+        // 3. Insert products
+        const sampleProducts = products_1.default.map((product) => {
+            return Object.assign(Object.assign({}, product), { user: adminUserId });
+        });
         yield Product_1.default.insertMany(sampleProducts);
         console.log("Data imported!".green.underline);
         process.exit();
