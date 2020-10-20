@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const products = [
+const mockProducts = [
     {
         _id: "1",
         name: "Airpods Wireless Bluetooth Headphones",
@@ -74,4 +74,4 @@ const products = [
         numReviews: 12,
     },
 ];
-exports.default = products;
+exports.default = mockProducts;

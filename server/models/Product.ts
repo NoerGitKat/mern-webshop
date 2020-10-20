@@ -7,14 +7,21 @@ const reviewSchema: mongoose.Schema = new Schema(
     name: { type: String, required: true },
     rating: { type: Number, required: true },
     comment: { type: String, required: true },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 const productSchema: mongoose.Schema = new Schema(
   {
     user: {
-      type: mongoose.Schema.Types.ObjectId, // Adds relationship to a particular user
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: "User",
     },
@@ -38,12 +45,12 @@ const productSchema: mongoose.Schema = new Schema(
       type: String,
       required: true,
     },
-    avgRating: {
+    reviews: [reviewSchema],
+    rating: {
       type: Number,
       required: true,
       default: 0,
     },
-    reviews: [reviewSchema],
     numReviews: {
       type: Number,
       required: true,
@@ -60,7 +67,9 @@ const productSchema: mongoose.Schema = new Schema(
       default: 0,
     },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
 const Product: mongoose.Model<mongoose.Document, {}> = mongoose.model(

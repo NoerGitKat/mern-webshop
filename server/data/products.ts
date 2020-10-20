@@ -1,6 +1,6 @@
-import { IProduct } from "../types/products";
+import { IProduct } from "../types/product-types";
 
-const products: IProduct[] = [
+const mockProducts: IProduct[] = [
   {
     _id: "1",
     name: "Airpods Wireless Bluetooth Headphones",
@@ -81,4 +81,4 @@ const products: IProduct[] = [
   },
 ];
 
-export default products;
+export default mockProducts;
