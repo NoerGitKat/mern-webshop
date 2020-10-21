@@ -1,49 +1,47 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Col, Row, Spinner } from "react-bootstrap";
 import Product from "../components/Product";
-import { IProduct } from "../types/products";
+import { IProduct } from "../types/products-interfaces";
+import { listProducts } from "../redux/actions/product-actions";
 
 interface HomeProps {}
 
 const HomePage: React.FC<HomeProps> = () => {
-  const [products, setProducts] = useState<IProduct[]>([]);
+  const dispatch = useDispatch();
+  const productList = useSelector((state: any) => state.productList);
+  const { products, loading, error } = productList;
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("/api/products");
-        if (response.ok) {
-          const products = await response.json();
-          setProducts(products);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
+    dispatch(listProducts());
+  }, [dispatch]);
 
   return (
     <>
       <h1>Latest Products</h1>
       <Row>
-        {products.map((product: IProduct) => (
-          <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-            <Product
-              _id={product._id}
-              name={product.name}
-              image={product.image}
-              description={product.description}
-              category={product.category}
-              price={product.price}
-              numReviews={product.numReviews}
-              brand={product.brand}
-              countInStock={product.countInStock}
-              rating={product.rating}
-            />
-          </Col>
-        ))}
+        {loading ? (
+          <Spinner animation={"border"} />
+        ) : error ? (
+          <div>{error}</div>
+        ) : (
+          products.map((product: IProduct) => (
+            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+              <Product
+                _id={product._id}
+                name={product.name}
+                image={product.image}
+                description={product.description}
+                category={product.category}
+                price={product.price}
+                numReviews={product.numReviews}
+                brand={product.brand}
+                countInStock={product.countInStock}
+                rating={product.rating}
+              />
+            </Col>
+          ))
+        )}
       </Row>
     </>
   );

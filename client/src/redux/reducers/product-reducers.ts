@@ -1,4 +1,4 @@
-import { IProductAction } from "../../types/products";
+import { IProductAction } from "../../types/products-interfaces";
 import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
@@ -13,9 +13,9 @@ const productListReducer = (
     case PRODUCT_LIST_REQUEST:
       return { loading: true };
     case PRODUCT_LIST_SUCCESS:
-      return { loading: true, products: action.payload };
+      return { loading: false, products: action.payload };
     case PRODUCT_LIST_FAIL:
-      return { loading: true, error: action.error };
+      return { loading: false, error: action.error };
     default:
       return initialState;
   }

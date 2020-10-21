@@ -1,4 +1,4 @@
-import { IProduct } from "./types/products";
+import { IProduct } from "./types/products-interfaces";
 
 const products: IProduct[] = [
   {

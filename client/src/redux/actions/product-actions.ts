@@ -12,10 +12,11 @@ const listProducts = () => async (dispatch: Dispatch) => {
     dispatch(reqAction);
 
     // 2. Receive products
-    const products = await fetch("/api/products");
+    const response: Response = await fetch("/api/products");
+    const products = await response.json();
 
     if (products.length > 0) {
-      const successAction = { type: PRODUCT_LIST_SUCCESS, products };
+      const successAction = { type: PRODUCT_LIST_SUCCESS, payload: products };
       dispatch(successAction);
     } else {
       const failAction = {

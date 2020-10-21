@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Rating from "../components/Rating";
-import { IProduct } from "../types/products";
+import { IProduct } from "../types/products-interfaces";
 
 interface ProductProps {
   match: { params: { id: string } };
