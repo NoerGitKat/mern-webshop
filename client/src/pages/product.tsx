@@ -1,5 +1,13 @@
-import React, { useEffect } from "react";
-import { Button, Card, Col, Image, ListGroup, Row } from "react-bootstrap";
+import React, { ChangeEvent, useEffect, useState } from "react";
+import {
+  Button,
+  Card,
+  Col,
+  Form,
+  Image,
+  ListGroup,
+  Row,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AlertMessage from "../components/AlertMessage";
@@ -9,11 +17,20 @@ import { listSingleProduct } from "../redux/actions/product-actions";
 import { IProductDetails } from "../types/products-interfaces";
 
 interface ProductProps {
+  history: {
+    push(url: string): void;
+  };
   match: { params: { id: string } };
 }
 
-const ProductPage: React.FC<ProductProps> = ({ match }): JSX.Element => {
+const ProductPage: React.FC<ProductProps> = ({
+  history,
+  match,
+}): JSX.Element => {
   const productId = match.params.id;
+  const { push } = history;
+
+  const [qty, setQty] = useState("1");
   const dispatch = useDispatch();
   const productDetails = useSelector((state: any) => state.productDetails);
   const { product, loading, error }: IProductDetails = productDetails;
@@ -21,6 +38,25 @@ const ProductPage: React.FC<ProductProps> = ({ match }): JSX.Element => {
   useEffect(() => {
     dispatch(listSingleProduct(productId));
   }, [productId, dispatch]);
+
+  const changeQuantity = (event: ChangeEvent<HTMLInputElement>): void => {
+    const {
+      target: { value },
+    } = event;
+    setQty(value);
+  };
+
+  const optsElements: JSX.Element[] = [
+    ...Array(product.countInStock).keys(),
+  ].map((_, index) => (
+    <option key={index + 1} value={index + 1}>
+      {index + 1}
+    </option>
+  ));
+
+  const addToCartHandler = () => {
+    push(`/cart/${productId}?qty=${qty}`);
+  };
 
   if (!product) {
     return <>No product found!</>;
@@ -53,7 +89,7 @@ const ProductPage: React.FC<ProductProps> = ({ match }): JSX.Element => {
                   </ListGroup.Item>
                   <ListGroup.Item>Price: ${product.price}</ListGroup.Item>
                   <ListGroup.Item>
-                    Description: {product.description}
+                    <strong>Description</strong>: {product.description}
                   </ListGroup.Item>
                 </ListGroup>
               </Col>
@@ -82,6 +118,7 @@ const ProductPage: React.FC<ProductProps> = ({ match }): JSX.Element => {
                     </ListGroup.Item>
                     <ListGroup.Item>
                       <Button
+                        onClick={addToCartHandler}
                         className="btn-block"
                         type="button"
                         disabled={product.countInStock === 0}
@@ -89,6 +126,23 @@ const ProductPage: React.FC<ProductProps> = ({ match }): JSX.Element => {
                         Add To Cart
                       </Button>
                     </ListGroup.Item>
+
+                    {product.countInStock > 0 && (
+                      <ListGroup.Item>
+                        <Row>
+                          <Col>Quantity</Col>
+                          <Col>
+                            <Form.Control
+                              as="select"
+                              value={qty}
+                              onChange={changeQuantity}
+                            >
+                              {optsElements}
+                            </Form.Control>
+                          </Col>
+                        </Row>
+                      </ListGroup.Item>
+                    )}
                   </ListGroup>
                 </Card>
               </Col>
