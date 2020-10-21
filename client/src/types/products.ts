@@ -11,4 +11,10 @@ interface IProduct {
   numReviews: number;
 }
 
-export type { IProduct };
+interface IProductAction {
+  type: string;
+  payload: IProduct[];
+  error: Error;
+}
+
+export type { IProduct, IProductAction };
