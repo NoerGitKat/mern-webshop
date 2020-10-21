@@ -6,7 +6,11 @@ interface RatingProps {
   color?: string;
 }
 
-const Rating: React.FC<RatingProps> = ({ rating, text, color }) => {
+const Rating: React.FC<RatingProps> = ({
+  rating,
+  text,
+  color,
+}): JSX.Element => {
   return (
     <div className="rating">
       <span>

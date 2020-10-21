@@ -1,7 +1,7 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
-const Footer: React.FC = () => {
+const Footer: React.FC = (): JSX.Element => {
   return (
     <footer>
       <Container>

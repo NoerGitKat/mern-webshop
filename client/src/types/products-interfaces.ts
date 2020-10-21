@@ -17,4 +17,16 @@ interface IProductAction {
   error: Error;
 }
 
-export type { IProduct, IProductAction };
+interface IProductDetails {
+  product: IProduct;
+  loading: Boolean;
+  error: any;
+}
+
+interface IProductList {
+  products: IProduct[];
+  loading: Boolean;
+  error: any;
+}
+
+export type { IProduct, IProductAction, IProductDetails, IProductList };

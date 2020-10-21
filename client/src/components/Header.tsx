@@ -2,7 +2,7 @@ import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 
-const Header: React.FC = () => {
+const Header: React.FC = (): JSX.Element => {
   return (
     <header>
       <Navbar bg="light" expand="lg">

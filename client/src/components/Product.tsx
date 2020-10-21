@@ -15,7 +15,7 @@ const Product: React.FC<IProduct> = ({
   countInStock,
   rating,
   numReviews,
-}) => {
+}): JSX.Element => {
   return (
     <Card className="my-3 p-3 rounded">
       <Link to={`/product/${_id}`}>

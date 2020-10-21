@@ -1,24 +1,43 @@
 import { IProductAction } from "../../types/products-interfaces";
 import {
+  PRODUCT_DETAILS_FAIL,
+  PRODUCT_DETAILS_REQUEST,
+  PRODUCT_DETAILS_SUCCESS,
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
 } from "../constants/constants";
 
 const productListReducer = (
-  initialState = { products: [] },
+  state = { products: [] },
   action: IProductAction
 ) => {
   switch (action.type) {
     case PRODUCT_LIST_REQUEST:
-      return { loading: true };
+      return { ...state, loading: true };
     case PRODUCT_LIST_SUCCESS:
-      return { loading: false, products: action.payload };
+      return { ...state, loading: false, products: action.payload };
     case PRODUCT_LIST_FAIL:
-      return { loading: false, error: action.error };
+      return { ...state, loading: false, error: action.error };
     default:
-      return initialState;
+      return state;
   }
 };
 
-export { productListReducer };
+const productDetailsReducer = (
+  state = { product: {} },
+  action: IProductAction
+) => {
+  switch (action.type) {
+    case PRODUCT_DETAILS_REQUEST:
+      return { ...state, loading: true };
+    case PRODUCT_DETAILS_SUCCESS:
+      return { ...state, loading: false, product: action.payload };
+    case PRODUCT_DETAILS_FAIL:
+      return { ...state, loading: false, error: action.error };
+    default:
+      return state;
+  }
+};
+
+export { productListReducer, productDetailsReducer };
