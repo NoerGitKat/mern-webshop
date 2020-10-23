@@ -32,8 +32,10 @@ const ProductPage: React.FC<ProductProps> = ({
 
   const [qty, setQty] = useState("1");
   const dispatch = useDispatch();
-  const productDetails = useSelector((state: any) => state.productDetails);
-  const { product, loading, error }: IProductDetails = productDetails;
+  const productDetails = useSelector(
+    (state: { productDetails: IProductDetails }) => state.productDetails
+  );
+  const { product, loading, error } = productDetails;
 
   useEffect(() => {
     dispatch(listSingleProduct(productId));

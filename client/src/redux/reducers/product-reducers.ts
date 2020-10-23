@@ -9,7 +9,11 @@ import {
 } from "../constants/constants";
 
 const productListReducer = (
-  state = { products: [] },
+  state: { products: Array<any>; loading: Boolean; error: null } = {
+    products: [],
+    loading: false,
+    error: null,
+  },
   action: IProductAction
 ) => {
   switch (action.type) {
