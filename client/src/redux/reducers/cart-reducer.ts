@@ -1,7 +1,7 @@
 import { IProduct, IProductAction } from "../../types/products-interfaces";
-import { CART_ADD_ITEM } from "./../constants/constants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "./../constants/constants";
 
-const cartReducer = (state = { cartItems: [] }, action: IProductAction) => {
+const cartReducer = (state = { cartItems: [] }, action: any) => {
   switch (action.type) {
     case CART_ADD_ITEM:
       const newItem: any = action.payload;
@@ -21,6 +21,14 @@ const cartReducer = (state = { cartItems: [] }, action: IProductAction) => {
       } else {
         return { ...state, cartItems: [...state.cartItems, newItem] };
       }
+    case CART_REMOVE_ITEM:
+      const id: string = action.payload;
+
+      const filteredCart = state.cartItems.filter(
+        (item: IProduct) => item._id !== id
+      );
+
+      return { ...state, cartItems: filteredCart };
     default:
       return state;
   }

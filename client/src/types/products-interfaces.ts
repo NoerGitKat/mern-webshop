@@ -14,7 +14,7 @@ interface IProduct {
 
 interface IProductAction {
   type: string;
-  payload: IProduct[];
+  payload: IProduct[] | string;
   error: Error;
 }
 

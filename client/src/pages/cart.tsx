@@ -1,9 +1,17 @@
 import React, { ChangeEvent, useEffect } from "react";
-import { Col, ListGroup, Row, Image, Form, Button } from "react-bootstrap";
+import {
+  Col,
+  ListGroup,
+  Row,
+  Image,
+  Form,
+  Button,
+  Card,
+} from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AlertMessage from "../components/AlertMessage";
-import { addToCart } from "../redux/actions/cart-actions";
+import { addToCart, removeFromCart } from "../redux/actions/cart-actions";
 import { IProduct } from "../types/products-interfaces";
 
 interface cartProps {
@@ -14,6 +22,7 @@ interface cartProps {
 
 const CartPage: React.FC<cartProps> = ({ match, history, location }) => {
   const productId = match.params.id;
+  const { push } = history;
   const dispatch = useDispatch();
   const cart = useSelector(
     (state: { cart: { cartItems: IProduct[] } }) => state.cart
@@ -37,7 +46,16 @@ const CartPage: React.FC<cartProps> = ({ match, history, location }) => {
   };
 
   const removeFromCartHandler = (productId: string) => {
-    console.log("removed!");
+    dispatch(removeFromCart(productId));
+  };
+
+  const subtotalItems = cartItems.reduce((acc, item) => acc + item.qty!, 0);
+  const subtotalPrice = cartItems
+    .reduce((acc, item) => acc + item.qty! * item.price!, 0)
+    .toFixed(2);
+
+  const checkoutHandler = () => {
+    push("/login?redirect=shipping");
   };
 
   return (
@@ -93,6 +111,25 @@ const CartPage: React.FC<cartProps> = ({ match, history, location }) => {
             })}
           </ListGroup>
         )}
+      </Col>
+      <Col md={4}>
+        <Card>
+          <ListGroup variant="flush">
+            <ListGroup.Item>
+              <h2>Subtotal ({subtotalItems}) items</h2>${subtotalPrice}
+            </ListGroup.Item>
+            <ListGroup.Item>
+              <Button
+                type="button"
+                className="btn-block"
+                disabled={cartItems.length === 0}
+                onClick={checkoutHandler}
+              >
+                Checkout
+              </Button>
+            </ListGroup.Item>
+          </ListGroup>
+        </Card>
       </Col>
     </Row>
   );

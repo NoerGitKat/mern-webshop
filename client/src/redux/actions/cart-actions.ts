@@ -1,5 +1,9 @@
 import { Dispatch } from "redux";
-import { CART_ADD_FAIL, CART_ADD_ITEM } from "../constants/constants";
+import {
+  CART_ADD_FAIL,
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+} from "../constants/constants";
 
 const addToCart = (id: string, qty: number) => async (
   dispatch: Dispatch,
@@ -32,4 +36,17 @@ const addToCart = (id: string, qty: number) => async (
   }
 };
 
-export { addToCart };
+const removeFromCart = (id: string) => (
+  dispatch: Dispatch,
+  getState: () => { cart: { cartItems: any } }
+) => {
+  const action = {
+    type: CART_REMOVE_ITEM,
+    payload: id,
+  };
+  dispatch(action);
+
+  localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
+};
+
+export { addToCart, removeFromCart };
