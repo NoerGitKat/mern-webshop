@@ -1,5 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import generateToken from "../util/generate-token";
 import User from "./../models/User";
 
 const loginUser = async (req: Request, res: Response, next: NextFunction) => {
@@ -23,12 +24,15 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
         user.password
       );
       if (passwordMatches) {
+        // Generate token
+        const token = generateToken(user._id);
+
         res.status(200).json({
           _id: user._id,
           username: user.username,
           email: user.email,
           isAdmin: user.isAdmin,
-          token: null,
+          token,
         });
       } else {
         return res.status(401).json({ msg: "Password is incorrect." });

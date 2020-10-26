@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUser = void 0;
 const express_validator_1 = require("express-validator");
+const generate_token_1 = __importDefault(require("../util/generate-token"));
 const User_1 = __importDefault(require("./../models/User"));
 const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = express_validator_1.validationResult(req);
@@ -31,12 +32,14 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
             // Check password
             const passwordMatches = yield user.matchPasswords(password, user.password);
             if (passwordMatches) {
+                // Generate token
+                const token = generate_token_1.default(user._id);
                 res.status(200).json({
                     _id: user._id,
                     username: user.username,
                     email: user.email,
                     isAdmin: user.isAdmin,
-                    token: null,
+                    token,
                 });
             }
             else {
