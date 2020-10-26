@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.loginUser = void 0;
 const express_validator_1 = require("express-validator");
 const User_1 = __importDefault(require("./../models/User"));
-const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = express_validator_1.validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json(errors);
@@ -23,12 +23,31 @@ const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     try {
         const user = yield User_1.default.findOne({ email });
+        console.log("user", user);
         if (!user) {
             res.status(401).json({ msg: "User doesn't exist." });
         }
+        else {
+            // Check password
+            const passwordMatches = yield user.matchPasswords(password, user.password);
+            if (passwordMatches) {
+                res.status(200).json({
+                    _id: user._id,
+                    username: user.username,
+                    email: user.email,
+                    isAdmin: user.isAdmin,
+                    token: null,
+                });
+            }
+            else {
+                return res.status(401).json({ msg: "Password is incorrect." });
+            }
+        }
     }
     catch (error) {
-        throw new Error("Something went wrong during login. Try again later!");
+        return res
+            .status(500)
+            .json({ msg: "Something went wrong. Try again later." });
     }
 });
 exports.loginUser = loginUser;

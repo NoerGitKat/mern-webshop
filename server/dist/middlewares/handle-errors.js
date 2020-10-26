@@ -8,6 +8,7 @@ const handleNotFound = (req, res, next) => {
 };
 exports.handleNotFound = handleNotFound;
 const handleError = (err, _req, res) => {
+    console.log("handleError");
     const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
     const errMessage = {
         message: err.message,

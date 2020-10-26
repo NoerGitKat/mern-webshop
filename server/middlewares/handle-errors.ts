@@ -11,6 +11,7 @@ const handleNotFound = (
 };
 
 const handleError = (err: Error, _req: Request, res: Response): Response => {
+  console.log("handleError");
   const statusCode = res.statusCode === 200 ? 500 : res.statusCode;
   const errMessage = {
     message: err.message,

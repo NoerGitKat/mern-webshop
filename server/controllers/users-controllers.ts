@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import User from "./../models/User";
 
-const loginUser = async (req: Request, res: Response) => {
+const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json(errors);
@@ -11,15 +11,33 @@ const loginUser = async (req: Request, res: Response) => {
   const { email, password } = req.body;
 
   try {
-    const user = await User.findOne({ email });
+    const user: any = await User.findOne({ email });
+    console.log("user", user);
 
     if (!user) {
       res.status(401).json({ msg: "User doesn't exist." });
+    } else {
+      // Check password
+      const passwordMatches = await user.matchPasswords(
+        password,
+        user.password
+      );
+      if (passwordMatches) {
+        res.status(200).json({
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          token: null,
+        });
+      } else {
+        return res.status(401).json({ msg: "Password is incorrect." });
+      }
     }
-
-    
   } catch (error) {
-    throw new Error("Something went wrong during login. Try again later!");
+    return res
+      .status(500)
+      .json({ msg: "Something went wrong. Try again later." });
   }
 };
 
