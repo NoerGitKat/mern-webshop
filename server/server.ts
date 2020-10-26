@@ -8,15 +8,18 @@ dotenv.config();
 import productsRouter from "./routes/products-router";
 import connectDB from "./util/connect-db";
 import { handleError, handleNotFound } from "./middlewares/handle-errors";
+import usersRouter from "./routes/user-routes";
 
-const app = express();
+const app: express.Express = express();
 const PORT = process.env.PORT || 5000;
 
 // Middlewares
 app.use(cors());
+app.use(express.json());
 
 // Routes
-app.use("/api/products/", productsRouter);
+app.use("/api/products", productsRouter);
+app.use("/api/users", usersRouter);
 
 // Error handling
 app.use(handleNotFound);

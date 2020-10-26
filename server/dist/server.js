@@ -11,12 +11,15 @@ dotenv_1.default.config();
 const products_router_1 = __importDefault(require("./routes/products-router"));
 const connect_db_1 = __importDefault(require("./util/connect-db"));
 const handle_errors_1 = require("./middlewares/handle-errors");
+const user_routes_1 = __importDefault(require("./routes/user-routes"));
 const app = express_1.default();
 const PORT = process.env.PORT || 5000;
 // Middlewares
 app.use(cors_1.default());
+app.use(express_1.default.json());
 // Routes
-app.use("/api/products/", products_router_1.default);
+app.use("/api/products", products_router_1.default);
+app.use("/api/users", user_routes_1.default);
 // Error handling
 app.use(handle_errors_1.handleNotFound);
 // app.use(handleError);

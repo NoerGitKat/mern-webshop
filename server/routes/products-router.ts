@@ -2,7 +2,7 @@ import express, { Router } from "express";
 import {
   getProducts,
   getSingleProduct,
-} from "../controllers/products-controller";
+} from "../controllers/products-controllers";
 
 const productsRouter: Router = express.Router();
 
