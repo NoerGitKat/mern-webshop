@@ -12,10 +12,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.loginUser = void 0;
+exports.getUserProfile = exports.loginUser = void 0;
 const express_validator_1 = require("express-validator");
 const generate_token_1 = __importDefault(require("../util/generate-token"));
 const User_1 = __importDefault(require("./../models/User"));
+// @desc Log user in
+// @route POST /api/users/login
+// @access  Public
 const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = express_validator_1.validationResult(req);
     if (!errors.isEmpty()) {
@@ -24,7 +27,6 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     const { email, password } = req.body;
     try {
         const user = yield User_1.default.findOne({ email });
-        console.log("user", user);
         if (!user) {
             res.status(401).json({ msg: "User doesn't exist." });
         }
@@ -54,3 +56,28 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.loginUser = loginUser;
+// @desc Log user in
+// @route POST /api/users/login
+// @access  Public
+const getUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const user = yield User_1.default.findById(req.user.id);
+        if (user) {
+            return res.status(200).json({
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                isAdmin: user.isAdmin,
+            });
+        }
+        else {
+            return res.status(404).json({ msg: "User not found." });
+        }
+    }
+    catch (error) {
+        return res
+            .status(500)
+            .json({ msg: "Something went wrong. Try again later." });
+    }
+});
+exports.getUserProfile = getUserProfile;

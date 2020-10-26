@@ -5,4 +5,10 @@ interface IUser {
   isAdmin: Boolean;
 }
 
-export { IUser };
+interface IDecodedJWT {
+  id: string;
+  iat: number;
+  exp: number;
+}
+
+export { IUser, IDecodedJWT };
