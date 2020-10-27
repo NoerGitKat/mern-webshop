@@ -9,6 +9,7 @@ import Header from "./components/Header";
 import HomePage from "./pages/home";
 import ProductPage from "./pages/product";
 import CartPage from "./pages/cart";
+import LoginPage from "./pages/login";
 
 function App(): JSX.Element {
   return (
@@ -17,6 +18,7 @@ function App(): JSX.Element {
       <Container className="mt-3">
         <Switch>
           <Route exact path="/" component={HomePage} />
+          <Route exact path="/login" component={LoginPage} />
           <Route exact path="/product/:id" component={ProductPage} />
           <Route exact path="/cart/:id?" component={CartPage} />
         </Switch>

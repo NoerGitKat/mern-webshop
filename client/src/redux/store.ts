@@ -7,48 +7,18 @@ import {
 } from "./reducers/product-reducers";
 import { cartReducer } from "./reducers/cart-reducer";
 import { IInitialState } from "../types/main-interfaces";
+import userReducer from "./reducers/user-reducer";
 
 const cartItemsFromLS = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems") as string)
   : [];
 
+const userDetailsFromLS = localStorage.getItem("userDetails")
+  ? JSON.parse(localStorage.getItem("userDetails") as string)
+  : {};
+
 const initialState: IInitialState = {
-  // productList: {
-  //   products: [
-  //     {
-  //       _id: "",
-  //       name: "",
-  //       image: "",
-  //       description: "",
-  //       brand: "",
-  //       category: "",
-  //       price: 0,
-  //       countInStock: 0,
-  //       rating: 0,
-  //       numReviews: 0,
-  //       qty: 0,
-  //     },
-  //   ],
-  //   loading: false,
-  //   error: null,
-  // },
-  // productDetails: {
-  //   loading: false,
-  //   error: { name: "", message: "", stack: undefined },
-  //   product: {
-  //     _id: "",
-  //     name: "",
-  //     image: "",
-  //     description: "",
-  //     brand: "",
-  //     category: "",
-  //     price: 0,
-  //     countInStock: 0,
-  //     rating: 0,
-  //     numReviews: 0,
-  //     qty: 0,
-  //   },
-  // },
+  userDetails: userDetailsFromLS,
   cart: { cartItems: cartItemsFromLS },
 };
 
@@ -56,6 +26,7 @@ const rootReducer: any = combineReducers({
   productList: productListReducer,
   productDetails: productDetailsReducer,
   cart: cartReducer,
+  userDetails: userReducer,
 });
 const middlewares = [thunk];
 

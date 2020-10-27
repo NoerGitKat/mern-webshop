@@ -1,4 +1,4 @@
-import { IProduct, IProductAction } from "../../types/products-interfaces";
+import { IProduct } from "../../types/products-interfaces";
 import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "./../constants/constants";
 
 const cartReducer = (state = { cartItems: [] }, action: any) => {
