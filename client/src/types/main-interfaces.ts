@@ -9,7 +9,7 @@ interface IInitialState {
   //   error: { name: string; message: string; stack: string | undefined };
   //   product: {};
   // };
-  userDetails: IUser;
+  loggedInUser: { userDetails: IUser };
   cart: ICartAction;
 }
 

@@ -24,9 +24,11 @@ const logUserIn = (credentials: ICredentials) => async (
       body: JSON.stringify(credentials) as any,
     };
 
-    const user = await fetch("/api/users/login", request);
+    const response = await fetch("/api/users/login", request);
+    const parsedResponse = await response.json();
 
-    if (user) {
+    if (parsedResponse.token) {
+      const user = parsedResponse;
       const successAction = {
         type: USER_LOGIN_SUCCESS,
         payload: user,
@@ -36,14 +38,18 @@ const logUserIn = (credentials: ICredentials) => async (
 
       localStorage.setItem("userDetails", JSON.stringify(user));
     } else {
-      throw new Error(
-        "Something went wrong with logging you in. Try again later."
-      );
+      const errorMessage = parsedResponse;
+      const failAction = {
+        type: USER_LOGIN_FAIL,
+        error: parsedResponse.errors || errorMessage,
+      };
+
+      dispatch(failAction);
     }
   } catch (error) {
     const failAction = {
       type: USER_LOGIN_FAIL,
-      error: error.message,
+      error,
     };
 
     dispatch(failAction);

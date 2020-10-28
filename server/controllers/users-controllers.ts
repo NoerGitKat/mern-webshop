@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
-import { IUser } from "../types/user-types";
 import generateToken from "../util/generate-token";
 import hashPassword from "../util/hash-password";
 import User from "./../models/User";
@@ -20,7 +19,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
     const user: any = await User.findOne({ email });
 
     if (!user) {
-      return res.status(401).json({ msg: "User doesn't exist." });
+      return res.status(401).json([{ msg: "User doesn't exist." }]);
     } else {
       // Check password
       const passwordMatches = await user.matchPasswords(
@@ -39,13 +38,13 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
           token,
         });
       } else {
-        return res.status(401).json({ msg: "Password is incorrect." });
+        return res.status(401).json([{ msg: "Password is incorrect." }]);
       }
     }
   } catch (error) {
     return res
       .status(500)
-      .json({ msg: "Something went wrong. Try again later." });
+      .json([{ msg: "Something went wrong. Try again later." }]);
   }
 };
 
@@ -68,12 +67,12 @@ const getUserProfile = async (
         isAdmin: user.isAdmin,
       });
     } else {
-      return res.status(404).json({ msg: "User not found." });
+      return res.status(404).json([{ msg: "User not found." }]);
     }
   } catch (error) {
     return res
       .status(500)
-      .json({ msg: "Something went wrong. Try again later." });
+      .json([{ msg: "Something went wrong. Try again later." }]);
   }
 };
 
@@ -119,18 +118,18 @@ const createUser = async (req: Request, res: Response) => {
           token,
         });
       } else {
-        return res
-          .status(400)
-          .json({
+        return res.status(400).json([
+          {
             msg: "Something went wrong during registering. Try again later.",
-          });
+          },
+        ]);
       }
     }
   } catch (error) {
     console.log("Error happened!", error.message);
     return res
       .status(500)
-      .json({ msg: "Something went wrong. Try again later." });
+      .json([{ msg: "Something went wrong. Try again later." }]);
   }
 };
 

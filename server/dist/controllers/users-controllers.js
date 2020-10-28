@@ -29,7 +29,7 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     try {
         const user = yield User_1.default.findOne({ email });
         if (!user) {
-            return res.status(401).json({ msg: "User doesn't exist." });
+            return res.status(401).json([{ msg: "User doesn't exist." }]);
         }
         else {
             // Check password
@@ -46,14 +46,14 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
                 });
             }
             else {
-                return res.status(401).json({ msg: "Password is incorrect." });
+                return res.status(401).json([{ msg: "Password is incorrect." }]);
             }
         }
     }
     catch (error) {
         return res
             .status(500)
-            .json({ msg: "Something went wrong. Try again later." });
+            .json([{ msg: "Something went wrong. Try again later." }]);
     }
 });
 exports.loginUser = loginUser;
@@ -72,13 +72,13 @@ const getUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
             });
         }
         else {
-            return res.status(404).json({ msg: "User not found." });
+            return res.status(404).json([{ msg: "User not found." }]);
         }
     }
     catch (error) {
         return res
             .status(500)
-            .json({ msg: "Something went wrong. Try again later." });
+            .json([{ msg: "Something went wrong. Try again later." }]);
     }
 });
 exports.getUserProfile = getUserProfile;
@@ -120,11 +120,11 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
                 });
             }
             else {
-                return res
-                    .status(400)
-                    .json({
-                    msg: "Something went wrong during registering. Try again later.",
-                });
+                return res.status(400).json([
+                    {
+                        msg: "Something went wrong during registering. Try again later.",
+                    },
+                ]);
             }
         }
     }
@@ -132,7 +132,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         console.log("Error happened!", error.message);
         return res
             .status(500)
-            .json({ msg: "Something went wrong. Try again later." });
+            .json([{ msg: "Something went wrong. Try again later." }]);
     }
 });
 exports.createUser = createUser;

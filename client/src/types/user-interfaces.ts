@@ -14,9 +14,8 @@ interface IUserAction {
 }
 
 interface ICredentials {
-  username: string;
-  password: string;
   email: string;
+  password: string;
 }
 
 export type { IUserAction, IUser, ICredentials };
