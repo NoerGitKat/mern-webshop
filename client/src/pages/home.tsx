@@ -6,12 +6,13 @@ import { IProduct, IProductList } from "../types/products-interfaces";
 import { listProducts } from "../redux/actions/product-actions";
 import Loader from "../components/Loader";
 import AlertMessage from "../components/AlertMessage";
+import { IInitialState } from "../types/main-interfaces";
 
 interface HomeProps {}
 
 const HomePage: React.FC<HomeProps> = (): JSX.Element => {
   const dispatch = useDispatch();
-  const productList = useSelector((state: any) => state.productList);
+  const productList = useSelector((state: IInitialState) => state.productList);
   const { products, loading, error }: IProductList = productList;
 
   useEffect(() => {

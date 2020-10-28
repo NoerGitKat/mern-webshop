@@ -18,7 +18,8 @@ const userDetailsFromLS = localStorage.getItem("userDetails")
   : null;
 
 const initialState: IInitialState = {
-  loggedInUser: { userDetails: userDetailsFromLS },
+  productList: { products: [], loading: false, error: null },
+  loggedInUser: { userDetails: userDetailsFromLS, loading: false, error: null },
   cart: { cartItems: cartItemsFromLS },
 };
 

@@ -6,6 +6,7 @@ import AlertMessage from "./../components/AlertMessage";
 import Loader from "./../components/Loader";
 import { logUserIn } from "./../redux/actions/user-actions";
 import FormContainer from "../components/FormContainer";
+import { IInitialState } from "../types/main-interfaces";
 
 interface LoginProps {
   history: { push(url: string): void };
@@ -16,7 +17,9 @@ const LoginPage: React.FC<LoginProps> = ({ history, location }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const loggedInUser = useSelector((state: any) => state.loggedInUser);
+  const loggedInUser = useSelector(
+    (state: IInitialState) => state.loggedInUser
+  );
   const { loading, error, userDetails } = loggedInUser;
 
   const redirect = location.search ? location.search.split("=")[1] : "/";

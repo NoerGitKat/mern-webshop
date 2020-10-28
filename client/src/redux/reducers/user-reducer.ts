@@ -15,7 +15,7 @@ const userReducer = (state = {}, action: IUserAction) => {
     case USER_LOGIN_FAIL:
       return { ...state, loading: false, error: action.error };
     case USER_LOGOUT:
-      return { ...state };
+      return { ...state, userDetails: null };
     default:
       return state;
   }

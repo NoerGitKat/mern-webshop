@@ -56,4 +56,14 @@ const logUserIn = (credentials: ICredentials) => async (
   }
 };
 
-export { logUserIn };
+const logUserOut = () => (dispatch: (arg0: { type: string }) => void) => {
+  const logoutAction = {
+    type: USER_LOGOUT,
+  };
+
+  dispatch(logoutAction);
+
+  localStorage.removeItem("userDetails");
+};
+
+export { logUserIn, logUserOut };
