@@ -98,7 +98,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (userExists) {
             return res
                 .status(400)
-                .json({ msg: "User already exists with that email." });
+                .json([{ msg: "User already exists with that email." }]);
         }
         else {
             const hashedPassword = yield hash_password_1.default(password);
@@ -122,7 +122,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
             else {
                 return res.status(400).json([
                     {
-                        msg: "Something went wrong during registering. Try again later.",
+                        msg: "Something went wrong during registration. Try again later.",
                     },
                 ]);
             }

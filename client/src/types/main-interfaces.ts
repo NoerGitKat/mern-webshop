@@ -10,6 +10,7 @@ interface IInitialState {
   //   product: {};
   // };
   loggedInUser: { userDetails: IUser; loading: boolean; error: any };
+  registeredUser: { userDetails: IUser; loading: boolean; error: any };
   cart: ICartAction;
 }
 

@@ -14,6 +14,7 @@ interface IUserAction {
 }
 
 interface ICredentials {
+  username?: string;
   email: string;
   password: string;
 }

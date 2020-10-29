@@ -7,8 +7,10 @@ const validateLogin = [
 
 const validateRegister = [
   check("username")
-    .isLength({ min: 3 })
-    .withMessage("Fill in a username of at least 3 characters!"),
+    .matches(/^([A-z0-9!@#$%^&*().,<>{}[\]<>?_=+\-|;:\'\"\/])*[^\s]\1*$/)
+    .withMessage(
+      "Fill in a username of at least 3 characters, no spaces allowed."
+    ),
   check("email").isEmail().withMessage("Fill in a valid email address!"),
   check("password")
     .matches(/(?=.*[A-Z])[A-Za-z\d@$!_%*-?&+]{8,}/)

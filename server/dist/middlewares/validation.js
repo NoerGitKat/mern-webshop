@@ -9,8 +9,8 @@ const validateLogin = [
 exports.validateLogin = validateLogin;
 const validateRegister = [
     express_validator_1.check("username")
-        .isLength({ min: 3 })
-        .withMessage("Fill in a username of at least 3 characters!"),
+        .matches(/^([A-z0-9!@#$%^&*().,<>{}[\]<>?_=+\-|;:\'\"\/])*[^\s]\1*$/)
+        .withMessage("Fill in a username of at least 3 characters, no spaces allowed."),
     express_validator_1.check("email").isEmail().withMessage("Fill in a valid email address!"),
     express_validator_1.check("password")
         .matches(/(?=.*[A-Z])[A-Za-z\d@$!_%*-?&+]{8,}/)

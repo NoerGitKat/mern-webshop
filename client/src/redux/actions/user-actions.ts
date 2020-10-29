@@ -4,6 +4,9 @@ import {
   USER_LOGIN_SUCCESS,
   USER_LOGIN_FAIL,
   USER_LOGOUT,
+  USER_REGISTER_REQUEST,
+  USER_REGISTER_FAIL,
+  USER_REGISTER_SUCCESS,
 } from "../constants/constants";
 
 const logUserIn = (credentials: ICredentials) => async (
@@ -66,4 +69,61 @@ const logUserOut = () => (dispatch: (arg0: { type: string }) => void) => {
   localStorage.removeItem("userDetails");
 };
 
-export { logUserIn, logUserOut };
+const registerUser = (credentials: ICredentials) => async (dispatch: any) => {
+  // 1. Send request to active loading
+  const reqAction = {
+    type: USER_REGISTER_REQUEST,
+  };
+
+  dispatch(reqAction);
+  try {
+    // 2. Send request to server to post data
+    const request = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    };
+    const response = await fetch("/api/users/register", request);
+    const parsedResponse = await response.json();
+
+    if (parsedResponse.token) {
+      // 3. Update register state if success
+      const successAction = {
+        type: USER_REGISTER_SUCCESS,
+        payload: parsedResponse,
+      };
+
+      dispatch(successAction);
+
+      // 4A. Update login state
+      const successAction2 = {
+        type: USER_LOGIN_SUCCESS,
+        payload: parsedResponse,
+      };
+
+      dispatch(successAction2);
+
+      localStorage.setItem("userDetails", JSON.stringify(parsedResponse));
+    } else {
+      const failAction = {
+        type: USER_REGISTER_FAIL,
+        error: parsedResponse.errors || parsedResponse,
+      };
+
+      dispatch(failAction);
+    }
+
+    // 4B. If error dispatch fail
+  } catch (error) {
+    const failAction = {
+      type: USER_REGISTER_FAIL,
+      error,
+    };
+
+    dispatch(failAction);
+  }
+};
+
+export { logUserIn, logUserOut, registerUser };
