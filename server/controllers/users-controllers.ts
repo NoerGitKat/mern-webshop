@@ -1,3 +1,4 @@
+import { resolveSoa } from "dns";
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
 import generateToken from "../util/generate-token";
@@ -48,16 +49,16 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-// @desc Log user in
-// @route POST /api/users/login
-// @access  Public
+// @desc Get user profile
+// @route GET /api/users/profile
+// @access  Private
 const getUserProfile = async (
-  req: { user: { id: string } },
+  req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const user: any = await User.findById(req.user.id);
+    const user: any = await User.findById(req.user?.id);
 
     if (user) {
       return res.status(200).json({
@@ -73,6 +74,49 @@ const getUserProfile = async (
     return res
       .status(500)
       .json([{ msg: "Something went wrong. Try again later." }]);
+  }
+};
+
+// @desc Update user profile
+// @route PUT /api/users/profile
+// @access Private
+const updateUserProfile = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json(errors);
+  }
+  
+  try {
+    const foundUser: any = await User.findById(req.user?.id);
+
+    if (foundUser) {
+      // Update or keep the old value
+      foundUser.username = req.body.username || foundUser.username;
+      foundUser.email = req.body.email || foundUser.email;
+      if (req.body.password) {
+        const hashedPassword = await hashPassword(req.body.password);
+        foundUser.password = hashedPassword;
+      }
+
+      const updatedUser = await foundUser.save();
+
+      console.log("updatedUser", updatedUser);
+
+      return res.status(200).json({
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      });
+    } else {
+      return res
+        .status(404)
+        .json([{ msg: "There's no user with this profile!" }]);
+    }
+  } catch (error) {
+    return res
+      .status(500)
+      .json([{ msg: "Something went wrong with updating. Try again later." }]);
   }
 };
 
@@ -133,4 +177,4 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
-export { loginUser, getUserProfile, createUser };
+export { loginUser, getUserProfile, createUser, updateUserProfile };

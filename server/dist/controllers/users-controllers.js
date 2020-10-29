@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createUser = exports.getUserProfile = exports.loginUser = void 0;
+exports.updateUserProfile = exports.createUser = exports.getUserProfile = exports.loginUser = void 0;
 const express_validator_1 = require("express-validator");
 const generate_token_1 = __importDefault(require("../util/generate-token"));
 const hash_password_1 = __importDefault(require("../util/hash-password"));
@@ -57,12 +57,13 @@ const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function
     }
 });
 exports.loginUser = loginUser;
-// @desc Log user in
-// @route POST /api/users/login
-// @access  Public
+// @desc Get user profile
+// @route GET /api/users/profile
+// @access  Private
 const getUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
-        const user = yield User_1.default.findById(req.user.id);
+        const user = yield User_1.default.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
         if (user) {
             return res.status(200).json({
                 _id: user._id,
@@ -82,6 +83,47 @@ const getUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, fun
     }
 });
 exports.getUserProfile = getUserProfile;
+// @desc Update user profile
+// @route PUT /api/users/profile
+// @access Private
+const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    const errors = express_validator_1.validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json(errors);
+    }
+    try {
+        const foundUser = yield User_1.default.findById((_b = req.user) === null || _b === void 0 ? void 0 : _b.id);
+        if (foundUser) {
+            // Update or keep the old value
+            foundUser.username = req.body.username || foundUser.username;
+            foundUser.email = req.body.email || foundUser.email;
+            if (req.body.password) {
+                const hashedPassword = yield hash_password_1.default(req.body.password);
+                foundUser.password = hashedPassword;
+            }
+            const updatedUser = yield foundUser.save();
+            console.log("updatedUser", updatedUser);
+            return res.status(200).json({
+                _id: updatedUser._id,
+                username: updatedUser.username,
+                email: updatedUser.email,
+                isAdmin: updatedUser.isAdmin,
+            });
+        }
+        else {
+            return res
+                .status(404)
+                .json([{ msg: "There's no user with this profile!" }]);
+        }
+    }
+    catch (error) {
+        return res
+            .status(500)
+            .json([{ msg: "Something went wrong with updating. Try again later." }]);
+    }
+});
+exports.updateUserProfile = updateUserProfile;
 // @desc Create a new user
 // @route POST /api/users/register
 // @access Public

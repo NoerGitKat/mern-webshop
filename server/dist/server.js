@@ -21,9 +21,9 @@ app.use(express_1.default.json());
 app.use("/api/products", products_router_1.default);
 app.use("/api/users", user_routes_1.default);
 // Error handling
-app.use(handle_errors_1.handleError);
 app.use(handle_errors_1.handleNotFound);
+app.use(handle_errors_1.handleError);
 app.listen(PORT, () => {
-    console.log(`The server is listening on port ${PORT}!`.yellow);
+    console.log(`The server is listening on port ${PORT}!`.green.inverse);
     connect_db_1.default();
 });

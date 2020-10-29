@@ -22,10 +22,10 @@ app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
 
 // Error handling
-app.use(handleError);
 app.use(handleNotFound);
+app.use(handleError);
 
 app.listen(PORT, () => {
-  console.log(`The server is listening on port ${PORT}!`.yellow);
+  console.log(`The server is listening on port ${PORT}!`.green.inverse);
   connectDB();
 });
