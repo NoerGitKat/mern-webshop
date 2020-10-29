@@ -11,6 +11,7 @@ import ProductPage from "./pages/product";
 import CartPage from "./pages/cart";
 import LoginPage from "./pages/login";
 import RegisterPage from "./pages/register";
+import ProfilePage from "./pages/profile";
 
 function App(): JSX.Element {
   return (
@@ -22,6 +23,7 @@ function App(): JSX.Element {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/product/:id" component={ProductPage} />
+          <Route exact path="/profile" component={ProfilePage} />
           <Route exact path="/cart/:id?" component={CartPage} />
         </Switch>
       </Container>

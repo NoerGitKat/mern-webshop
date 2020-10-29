@@ -11,11 +11,27 @@ import {
 
 const userReducer = (state = {}, action: IUserAction) => {
   switch (action.type) {
-    case USER_LOGIN_REQUEST:
+    case USER_LOGIN_REQUEST || USER_REGISTER_REQUEST:
+      return { ...state, loading: true };
+    case USER_REGISTER_REQUEST:
       return { ...state, loading: true };
     case USER_LOGIN_SUCCESS:
-      return { ...state, loading: false, userDetails: action.payload };
+      return {
+        ...state,
+        loading: false,
+        userDetails: action.payload,
+        error: null,
+      };
+    case USER_REGISTER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userDetails: action.payload,
+        error: null,
+      };
     case USER_LOGIN_FAIL:
+      return { ...state, loading: false, error: action.error };
+    case USER_REGISTER_FAIL:
       return { ...state, loading: false, error: action.error };
     case USER_LOGOUT:
       return { ...state, userDetails: null };
@@ -24,17 +40,4 @@ const userReducer = (state = {}, action: IUserAction) => {
   }
 };
 
-const userRegisterReducer = (state = {}, action: IUserAction) => {
-  switch (action.type) {
-    case USER_REGISTER_REQUEST:
-      return { ...state, loading: true };
-    case USER_REGISTER_SUCCESS:
-      return { ...state, loading: false, userDetails: action.payload };
-    case USER_REGISTER_FAIL:
-      return { ...state, loading: false, error: action.error };
-    default:
-      return state;
-  }
-};
-
-export { userReducer, userRegisterReducer };
+export { userReducer };

@@ -7,6 +7,12 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_FAIL,
   USER_REGISTER_SUCCESS,
+  USER_GET_PROFILE_REQUEST,
+  USER_GET_PROFILE_SUCCESS,
+  USER_GET_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_PROFILE_FAIL,
 } from "../constants/constants";
 
 const logUserIn = (credentials: ICredentials) => async (
@@ -126,4 +132,48 @@ const registerUser = (credentials: ICredentials) => async (dispatch: any) => {
   }
 };
 
-export { logUserIn, logUserOut, registerUser };
+const getProfile = (token: string) => async (
+  dispatch: (arg0: { type: string }) => void
+) => {
+  const reqAction = {
+    type: USER_GET_PROFILE_REQUEST,
+  };
+
+  dispatch(reqAction);
+
+  try {
+    const request = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await fetch("/api/users/profile", request);
+    const parsedResponse = await response.json();
+
+    if (parsedResponse.token) {
+      const successAction = {
+        type: USER_GET_PROFILE_SUCCESS,
+        payload: parsedResponse,
+      };
+      dispatch(successAction);
+    } else {
+      const failAction = {
+        type: USER_GET_PROFILE_FAIL,
+        error: parsedResponse.errors || parsedResponse,
+      };
+      dispatch(failAction);
+    }
+  } catch (error) {
+    const failAction = {
+      type: USER_GET_PROFILE_FAIL,
+      error,
+    };
+    dispatch(failAction);
+  }
+};
+
+const updateProfile = () => async (dispatch: any) => {};
+
+export { logUserIn, logUserOut, registerUser, getProfile, updateProfile };

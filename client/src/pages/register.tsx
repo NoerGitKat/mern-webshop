@@ -18,10 +18,10 @@ const RegisterPage: React.FC<RegisterProps> = ({ history, location }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
-  const registeredUser = useSelector(
-    (state: IInitialState) => state.registeredUser
+  const loggedInUser = useSelector(
+    (state: IInitialState) => state.loggedInUser
   );
-  const { loading, error, userDetails } = registeredUser;
+  const { loading, error, userDetails } = loggedInUser;
 
   const redirect = location.search ? location.search.split("=")[1] : "/";
 
