@@ -10,6 +10,9 @@ import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
   USER_GET_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
 } from "../constants/constants";
 
 const userReducer = (state = {}, action: IUserAction) => {
@@ -50,6 +53,17 @@ const userProfileReducer = (state = {}, action: IUserAction) => {
     case USER_GET_PROFILE_SUCCESS:
       return { ...state, loading: false, userProfile: action.payload };
     case USER_GET_PROFILE_FAIL:
+      return { ...state, loading: false, error: action.error };
+    case USER_UPDATE_PROFILE_REQUEST:
+      return { ...state, loading: true };
+    case USER_UPDATE_PROFILE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        userProfile: action.payload,
+        error: null,
+      };
+    case USER_UPDATE_PROFILE_FAIL:
       return { ...state, loading: false, error: action.error };
     default:
       return state;

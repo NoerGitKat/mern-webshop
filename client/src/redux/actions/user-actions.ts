@@ -174,6 +174,48 @@ const getProfile = (token: string) => async (
   }
 };
 
-const updateProfile = () => async (dispatch: any) => {};
+const updateProfile = (token: string, credentials: ICredentials) => async (
+  dispatch: any
+) => {
+  const reqAction = {
+    type: USER_UPDATE_PROFILE_REQUEST,
+  };
+
+  dispatch(reqAction);
+
+  try {
+    const request = {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(credentials),
+    };
+
+    const response = await fetch("/api/users/profile", request);
+    const parsedResponse = await response.json();
+
+    if (parsedResponse._id) {
+      const successAction = {
+        type: USER_UPDATE_PROFILE_SUCCESS,
+        payload: parsedResponse,
+      };
+      dispatch(successAction);
+    } else {
+      const failAction = {
+        type: USER_UPDATE_PROFILE_FAIL,
+        error: parsedResponse.errors || parsedResponse,
+      };
+      dispatch(failAction);
+    }
+  } catch (error) {
+    const failAction = {
+      type: USER_UPDATE_PROFILE_FAIL,
+      error,
+    };
+    dispatch(failAction);
+  }
+};
 
 export { logUserIn, logUserOut, registerUser, getProfile, updateProfile };

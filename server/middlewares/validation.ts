@@ -28,7 +28,7 @@ const validateUpdateProfile = [
   check("email").isEmail().withMessage("Fill in a valid email address!"),
   check("password")
     .matches(/(?=.*[A-Z])[A-Za-z\d@$!_%*-?&+]{8,}/)
-    .optional({ nullable: true })
+    .optional({ checkFalsy: true })
     .withMessage(
       "Your password should contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 digit and a special character"
     ),

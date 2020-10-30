@@ -24,7 +24,7 @@ const validateUpdateProfile = [
     express_validator_1.check("email").isEmail().withMessage("Fill in a valid email address!"),
     express_validator_1.check("password")
         .matches(/(?=.*[A-Z])[A-Za-z\d@$!_%*-?&+]{8,}/)
-        .optional({ nullable: true })
+        .optional({ checkFalsy: true })
         .withMessage("Your password should contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 digit and a special character"),
 ];
 exports.validateUpdateProfile = validateUpdateProfile;

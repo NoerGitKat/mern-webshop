@@ -1,8 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Button, Col, Form, Row } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
+import AlertMessage from "../components/AlertMessage";
 import Loader from "../components/Loader";
-import { getProfile } from "../redux/actions/user-actions";
+import {
+  getProfile,
+  logUserOut,
+  updateProfile,
+} from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
 
 interface ProfileProps {
@@ -27,13 +32,30 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
   const profile = useSelector((state: IInitialState) => state.profile);
   const { loading, error, userProfile } = profile;
 
+  let errorMessages;
   if (error) {
-    if (error.msg === "jwt expired'") {
-      history.push("/login");
-    }
+    errorMessages =
+      error.length >= 1
+        ? error.map((message: any, index: number) => (
+            <AlertMessage key={index} variant="danger">
+              {message.msg}
+            </AlertMessage>
+          ))
+        : null;
   }
 
+  console.log("error", error);
+
   useEffect(() => {
+    if (error && error.msg) {
+      if (error.msg === "jwt expired'") {
+        dispatch(logUserOut());
+        history.push("/login");
+      } else if (error.msg === "invalid signature") {
+        dispatch(logUserOut());
+        history.push("/login");
+      }
+    }
     // check if user is logged in. If not redirect to /login
     if (!userDetails) {
       history.push("/login");
@@ -43,16 +65,23 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
       } else {
         setUsername(userProfile.username as string);
         setEmail(userProfile.email as string);
+        setPassword("");
+        setConfirmPassword("");
       }
     }
-  }, [dispatch, history, userDetails, userProfile]);
+  }, [dispatch, history, userDetails, userProfile, error]);
 
-  const updateProfileHandler = (event: any) => {};
+  const updateProfileHandler = (event: any) => {
+    event.preventDefault();
+
+    dispatch(updateProfile(userDetails.token, { username, email, password }));
+  };
 
   return (
     <Row>
       <Col md={3}>
         <h2>Your Profile</h2>
+        {errorMessages}
         {loading && <Loader />}
         <Form onSubmit={updateProfileHandler}>
           <Form.Group controlId="name">
