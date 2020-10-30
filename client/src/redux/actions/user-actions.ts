@@ -152,7 +152,7 @@ const getProfile = (token: string) => async (
     const response = await fetch("/api/users/profile", request);
     const parsedResponse = await response.json();
 
-    if (parsedResponse.token) {
+    if (parsedResponse._id) {
       const successAction = {
         type: USER_GET_PROFILE_SUCCESS,
         payload: parsedResponse,
