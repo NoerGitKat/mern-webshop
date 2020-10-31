@@ -34,4 +34,25 @@ const validateUpdateProfile = [
     ),
 ];
 
-export { validateLogin, validateRegister, validateUpdateProfile };
+const validateOrder = [
+  check("orderItems").exists(),
+  check("shippingAddress").isString().withMessage("Address should be text."),
+  check("paymentMethod").isString().withMessage(""),
+  check("itemsPrice")
+    .isNumeric()
+    .withMessage("Items price should be a number."),
+  check("taxPrice").isNumeric().withMessage("Tax price should be a number."),
+  check("shippingPrice")
+    .isNumeric()
+    .withMessage("Shipping price should be a number."),
+  check("totalPrice")
+    .isNumeric()
+    .withMessage("Total price should be a number."),
+];
+
+export {
+  validateLogin,
+  validateRegister,
+  validateUpdateProfile,
+  validateOrder,
+};

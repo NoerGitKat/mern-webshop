@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUpdateProfile = exports.validateRegister = exports.validateLogin = void 0;
+exports.validateOrder = exports.validateUpdateProfile = exports.validateRegister = exports.validateLogin = void 0;
 const express_validator_1 = require("express-validator");
 const validateLogin = [
     express_validator_1.check("email").isEmail().withMessage("Fill in a valid email address!"),
@@ -28,3 +28,19 @@ const validateUpdateProfile = [
         .withMessage("Your password should contain at least 8 characters, including 1 uppercase, 1 lowercase, 1 digit and a special character"),
 ];
 exports.validateUpdateProfile = validateUpdateProfile;
+const validateOrder = [
+    express_validator_1.check("orderItems").exists(),
+    express_validator_1.check("shippingAddress").isString().withMessage("Address should be text."),
+    express_validator_1.check("paymentMethod").isString().withMessage(""),
+    express_validator_1.check("itemsPrice")
+        .isNumeric()
+        .withMessage("Items price should be a number."),
+    express_validator_1.check("taxPrice").isNumeric().withMessage("Tax price should be a number."),
+    express_validator_1.check("shippingPrice")
+        .isNumeric()
+        .withMessage("Shipping price should be a number."),
+    express_validator_1.check("totalPrice")
+        .isNumeric()
+        .withMessage("Total price should be a number."),
+];
+exports.validateOrder = validateOrder;
