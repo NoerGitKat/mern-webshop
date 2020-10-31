@@ -5,6 +5,7 @@ import {
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
   CART_SAVE_SHIPPING_ADDRESS,
+  CART_SAVE_PAYMENT_METHOD,
 } from "../constants/constants";
 
 const addToCart = (id: string, qty: number) => async (
@@ -64,4 +65,15 @@ const saveShippingAddress = (data: IShippingAddress) => (
   localStorage.setItem("shippingAddress", JSON.stringify(data));
 };
 
-export { addToCart, removeFromCart, saveShippingAddress };
+const savePaymentMethod = (paymentMethod: string) => (dispatch: Dispatch) => {
+  // 1. Put data in state
+  dispatch({
+    type: CART_SAVE_PAYMENT_METHOD,
+    payload: paymentMethod,
+  });
+
+  // 2. Save data in localStorage
+  localStorage.setItem("paymentMethod", JSON.stringify(paymentMethod));
+};
+
+export { addToCart, removeFromCart, saveShippingAddress, savePaymentMethod };

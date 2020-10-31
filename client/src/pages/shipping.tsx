@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CheckoutSteps from "../components/CheckoutSteps";
 import FormContainer from "../components/FormContainer";
 import { saveShippingAddress } from "../redux/actions/cart-actions";
+import { IInitialState } from "../types/main-interfaces";
 
 interface ShippingProps {
   history: {
@@ -12,8 +13,12 @@ interface ShippingProps {
 }
 
 const ShippingPage: React.FC<ShippingProps> = ({ history }) => {
-  const cart = useSelector((state: any) => state.cart);
+  const cart = useSelector((state: IInitialState) => state.cart);
   const { shippingAddress } = cart;
+
+  const loggedInUser = useSelector(
+    (state: IInitialState) => state.loggedInUser
+  );
 
   const dispatch = useDispatch();
 
@@ -21,6 +26,12 @@ const ShippingPage: React.FC<ShippingProps> = ({ history }) => {
   const [city, setCity] = useState(shippingAddress.city);
   const [country, setCountry] = useState(shippingAddress.country);
   const [postalCode, setPostalCode] = useState(shippingAddress.postalCode);
+
+  useEffect(() => {
+    if (!loggedInUser.userDetails) {
+      history.push('/login?redirect=shipping');
+    }
+  });
 
   const handleSubmit = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -39,7 +50,7 @@ const ShippingPage: React.FC<ShippingProps> = ({ history }) => {
 
   return (
     <FormContainer>
-      <CheckoutSteps step1 />
+      <CheckoutSteps step1 step2 />
       <h1>Shipping</h1>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId="address">
