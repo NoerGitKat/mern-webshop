@@ -17,6 +17,10 @@ const addressFromLS = localStorage.getItem("shippingAddress")
   ? JSON.parse(localStorage.getItem("shippingAddress") as string)
   : { address: "", city: "", country: "", postalCode: "" };
 
+const methodFromLS = localStorage.getItem("paymentMethod")
+  ? JSON.parse(localStorage.getItem("paymentMethod") as string)
+  : "";
+
 const userDetailsFromLS = localStorage.getItem("userDetails")
   ? JSON.parse(localStorage.getItem("userDetails") as string)
   : null;
@@ -35,7 +39,11 @@ const initialState: IInitialState = {
     loading: false,
     error: null,
   },
-  cart: { cartItems: cartItemsFromLS, shippingAddress: addressFromLS },
+  cart: {
+    cartItems: cartItemsFromLS,
+    shippingAddress: addressFromLS,
+    paymentMethod: methodFromLS,
+  },
 };
 
 const rootReducer: any = combineReducers({
