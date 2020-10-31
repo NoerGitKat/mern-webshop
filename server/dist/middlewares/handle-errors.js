@@ -13,7 +13,6 @@ const handleError = (err, _req, res) => {
         message: err.message,
         stack: process.env.NODE_ENV === "production" ? null : err.stack,
     };
-    console.log("res is what bruh", res);
     return res.status(statusCode).json(errMessage);
 };
 exports.handleError = handleError;

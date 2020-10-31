@@ -1,7 +1,14 @@
 import { IProduct } from "../../types/products-interfaces";
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "./../constants/constants";
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+} from "./../constants/constants";
 
-const cartReducer = (state = { cartItems: [] }, action: any) => {
+const cartReducer = (
+  state = { cartItems: [], shippingAddress: {} },
+  action: any
+) => {
   switch (action.type) {
     case CART_ADD_ITEM:
       const newItem: any = action.payload;
@@ -29,6 +36,8 @@ const cartReducer = (state = { cartItems: [] }, action: any) => {
       );
 
       return { ...state, cartItems: filteredCart };
+    case CART_SAVE_SHIPPING_ADDRESS:
+      return { ...state, shippingAddress: action.payload };
     default:
       return state;
   }

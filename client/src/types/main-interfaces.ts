@@ -1,4 +1,4 @@
-import { ICartAction } from "./cart-interfaces";
+import { ICartAction, IShippingAddress } from "./cart-interfaces";
 import { IUser } from "./user-interfaces";
 
 interface IInitialState {

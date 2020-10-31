@@ -1,8 +1,10 @@
 import { Dispatch } from "redux";
+import { IShippingAddress } from "../../types/cart-interfaces";
 import {
   CART_ADD_FAIL,
   CART_ADD_ITEM,
   CART_REMOVE_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
 } from "../constants/constants";
 
 const addToCart = (id: string, qty: number) => async (
@@ -49,4 +51,17 @@ const removeFromCart = (id: string) => (
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
-export { addToCart, removeFromCart };
+const saveShippingAddress = (data: IShippingAddress) => (
+  dispatch: Dispatch
+) => {
+  // 1. Put data in state
+  dispatch({
+    type: CART_SAVE_SHIPPING_ADDRESS,
+    payload: data,
+  });
+
+  // 2. Save data in localStorage
+  localStorage.setItem("shippingAddress", JSON.stringify(data));
+};
+
+export { addToCart, removeFromCart, saveShippingAddress };

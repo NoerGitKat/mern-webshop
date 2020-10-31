@@ -81,7 +81,6 @@ const getUserProfile = async (
 // @route PUT /api/users/profile
 // @access Private
 const updateUserProfile = async (req: Request, res: Response) => {
-  console.log("req.body is...", req.body);
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json(errors);
@@ -100,8 +99,6 @@ const updateUserProfile = async (req: Request, res: Response) => {
       }
 
       const updatedUser = await foundUser.save();
-
-      console.log("updatedUser", updatedUser);
 
       return res.status(200).json({
         _id: updatedUser._id,

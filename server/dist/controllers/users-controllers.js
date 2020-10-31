@@ -88,7 +88,6 @@ exports.getUserProfile = getUserProfile;
 // @access Private
 const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
-    console.log("req.body is...", req.body);
     const errors = express_validator_1.validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json(errors);
@@ -104,7 +103,6 @@ const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, functi
                 foundUser.password = hashedPassword;
             }
             const updatedUser = yield foundUser.save();
-            console.log("updatedUser", updatedUser);
             return res.status(200).json({
                 _id: updatedUser._id,
                 username: updatedUser.username,
