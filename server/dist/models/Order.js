@@ -17,7 +17,7 @@ const orderSchema = new Schema({
             qty: { type: Number, required: true, default: 0 },
             image: { type: String, required: true },
             price: { type: Number, required: true },
-            product: {
+            productId: {
                 type: mongoose_1.default.Schema.Types.ObjectId,
                 required: true,
                 ref: "Product",
@@ -33,7 +33,7 @@ const orderSchema = new Schema({
             type: String,
             required: true,
         },
-        zipCode: {
+        postalCode: {
             type: String,
             required: true,
         },

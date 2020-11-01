@@ -21,7 +21,7 @@ app.use(express.json());
 // Routes
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
-app.use("api/orders", ordersRouter);
+app.use("/api/orders", ordersRouter);
 
 // Error handling
 app.use(handleNotFound);

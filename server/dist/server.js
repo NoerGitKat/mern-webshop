@@ -21,7 +21,7 @@ app.use(express_1.default.json());
 // Routes
 app.use("/api/products", products_router_1.default);
 app.use("/api/users", user_routes_1.default);
-app.use("api/orders", orders_routes_1.default);
+app.use("/api/orders", orders_routes_1.default);
 // Error handling
 app.use(handle_errors_1.handleNotFound);
 app.use(handle_errors_1.handleError);

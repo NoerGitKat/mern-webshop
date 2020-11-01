@@ -30,7 +30,7 @@ const validateUpdateProfile = [
 exports.validateUpdateProfile = validateUpdateProfile;
 const validateOrder = [
     express_validator_1.check("orderItems").exists(),
-    express_validator_1.check("shippingAddress").isString().withMessage("Address should be text."),
+    express_validator_1.check("shippingAddress").exists(),
     express_validator_1.check("paymentMethod").isString().withMessage(""),
     express_validator_1.check("itemsPrice")
         .isNumeric()

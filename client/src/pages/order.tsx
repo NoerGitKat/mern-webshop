@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import { Col, ListGroup, Row, Image, Card, Button } from "react-bootstrap";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import AlertMessage from "../components/AlertMessage";
 import CheckoutSteps from "../components/CheckoutSteps";
+import Loader from "../components/Loader";
+import { createOrder } from "../redux/actions/orders-actions";
 import { IInitialState } from "../types/main-interfaces";
+import { IOrder } from "../types/orders-interfaces";
 import addDecimals from "../utils/addDecimals";
 
 interface OrderProps {
@@ -14,6 +17,7 @@ interface OrderProps {
 }
 
 const OrderPage: React.FC<OrderProps> = ({ history }) => {
+  const dispatch = useDispatch();
   const cart = useSelector((state: IInitialState) => state.cart);
   const { shippingAddress, paymentMethod, cartItems } = cart;
 
@@ -22,16 +26,31 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
   );
   const { userDetails } = loggedInUser;
 
+  const createdOrder = useSelector(
+    (state: IInitialState) => state.createdOrder
+  );
+  const { order, loading, success, error } = createdOrder;
+
   useEffect(() => {
     if (!userDetails) {
       history.push("/login?redirect=shipping");
+    } else if (success) {
+      history.push(`/order/${order!._id}`);
     }
-  });
+  }, [history, success, userDetails, order]);
 
   const handlePlaceOrder = (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    // Empty state
-    // Make HTTP Request to backend
+    const order: IOrder = {
+      orderItems: cartItems,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      taxPrice: Number(taxPrice),
+      shippingPrice: Number(shippingPrice),
+      totalPrice,
+    };
+    dispatch(createOrder(order, userDetails.token));
   };
 
   const itemsPrice = cartItems.reduce(
@@ -48,6 +67,7 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
   return (
     <>
       <CheckoutSteps step1 step2 step3 step4 />
+      {loading && <Loader />}
       <Row>
         <Col md={8}>
           <ListGroup variant="flush">
@@ -55,7 +75,7 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
               <h2>Shipping</h2>
               <p>
                 <strong>Address: </strong>
-                {shippingAddress.address}, {shippingAddress.city}{" "}
+                {shippingAddress.address}, {shippingAddress.city}
                 {shippingAddress.postalCode}, {shippingAddress.country}
               </p>
             </ListGroup.Item>
@@ -110,19 +130,20 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
                   <Col>Shipping</Col>
                   <Col>${shippingPrice}</Col>
                 </Row>
-              </ListGroup.Item>{" "}
+              </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Tax</Col>
                   <Col>${taxPrice}</Col>
                 </Row>
-              </ListGroup.Item>{" "}
+              </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
                   <Col>${totalPrice.toFixed(2)}</Col>
                 </Row>
               </ListGroup.Item>
+              {error && <AlertMessage variant="danger">{error}</AlertMessage>}
               <ListGroup.Item>
                 <Button
                   type="button"

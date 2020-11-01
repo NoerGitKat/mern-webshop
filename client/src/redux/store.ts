@@ -8,6 +8,7 @@ import {
 import { cartReducer } from "./reducers/cart-reducer";
 import { IInitialState } from "../types/main-interfaces";
 import { userProfileReducer, userReducer } from "./reducers/user-reducer";
+import { orderCreateReducer } from "./reducers/orders-reducer";
 
 const cartItemsFromLS = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems") as string)
@@ -44,6 +45,12 @@ const initialState: IInitialState = {
     shippingAddress: addressFromLS,
     paymentMethod: methodFromLS,
   },
+  createdOrder: {
+    order: null,
+    loading: false,
+    error: null,
+    success: false,
+  },
 };
 
 const rootReducer: any = combineReducers({
@@ -52,6 +59,7 @@ const rootReducer: any = combineReducers({
   cart: cartReducer,
   loggedInUser: userReducer,
   profile: userProfileReducer,
+  createdOrder: orderCreateReducer,
 });
 const middlewares = [thunk];
 

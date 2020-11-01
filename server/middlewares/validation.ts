@@ -36,7 +36,7 @@ const validateUpdateProfile = [
 
 const validateOrder = [
   check("orderItems").exists(),
-  check("shippingAddress").isString().withMessage("Address should be text."),
+  check("shippingAddress").exists(),
   check("paymentMethod").isString().withMessage(""),
   check("itemsPrice")
     .isNumeric()

@@ -20,7 +20,7 @@ const addToCart = (id: string, qty: number) => async (
     // 2. Dispatch to change state
     const action = {
       type: CART_ADD_ITEM,
-      payload: { ...product, qty },
+      payload: { ...product, productId: id, qty },
     };
     dispatch(action);
 
