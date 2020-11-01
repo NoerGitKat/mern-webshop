@@ -1,6 +1,4 @@
 "use strict";
-// @desc Create new order
-// @route POST /api/orders/
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -14,9 +12,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.createNewOrder = void 0;
+exports.getOrderById = exports.createNewOrder = void 0;
 const express_validator_1 = require("express-validator");
 const Order_1 = __importDefault(require("../models/Order"));
+// @desc Create new order
+// @route POST /api/orders/
 // @access Private
 const createNewOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -44,3 +44,22 @@ const createNewOrder = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.createNewOrder = createNewOrder;
+// @desc Get order by Id
+// @route GET /api/orders/:id
+// @access Private
+const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const foundOrder = yield Order_1.default.findById(id).populate("user", "username email");
+        if (foundOrder) {
+            return res.status(200).json(foundOrder);
+        }
+        else {
+            return res.status(404).json({ msg: "Couldn't find order." });
+        }
+    }
+    catch (error) {
+        return res.status(500).json([{ msg: error.message }]);
+    }
+});
+exports.getOrderById = getOrderById;

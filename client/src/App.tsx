@@ -14,7 +14,8 @@ import RegisterPage from "./pages/register";
 import ProfilePage from "./pages/profile";
 import ShippingPage from "./pages/shipping";
 import PaymentPage from "./pages/payment";
-import OrderPage from "./pages/order";
+import OrderDetailsPage from "./pages/order-details";
+import PlaceOrderPage from "./pages/place-order";
 
 function App(): JSX.Element {
   return (
@@ -25,7 +26,8 @@ function App(): JSX.Element {
           <Route exact path="/login" component={LoginPage} />
           <Route exact path="/shipping" component={ShippingPage} />
           <Route exact path="/payment" component={PaymentPage} />
-          <Route exact path="/order" component={OrderPage} />
+          <Route exact path="/order" component={PlaceOrderPage} />
+          <Route exact path="/order/:id" component={OrderDetailsPage} />
           <Route exact path="/register" component={RegisterPage} />
           <Route exact path="/product/:id" component={ProductPage} />
           <Route exact path="/profile" component={ProfilePage} />

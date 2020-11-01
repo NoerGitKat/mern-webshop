@@ -6,17 +6,18 @@ import AlertMessage from "../components/AlertMessage";
 import CheckoutSteps from "../components/CheckoutSteps";
 import Loader from "../components/Loader";
 import { createOrder } from "../redux/actions/orders-actions";
+import { logUserOut } from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
 import { IOrder } from "../types/orders-interfaces";
 import addDecimals from "../utils/addDecimals";
 
-interface OrderProps {
+interface PlaceOrderProps {
   history: {
     push: (url: string) => void;
   };
 }
 
-const OrderPage: React.FC<OrderProps> = ({ history }) => {
+const PlaceOrderPage: React.FC<PlaceOrderProps> = ({ history }) => {
   const dispatch = useDispatch();
   const cart = useSelector((state: IInitialState) => state.cart);
   const { shippingAddress, paymentMethod, cartItems } = cart;
@@ -30,14 +31,18 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
     (state: IInitialState) => state.createdOrder
   );
   const { order, loading, success, error } = createdOrder;
+  console.log("order is whut", order);
 
   useEffect(() => {
     if (!userDetails) {
       history.push("/login?redirect=shipping");
+    } else if (error && error.msg === "jwt expired") {
+      dispatch(logUserOut());
+      history.push("/login?redirect=shipping");
     } else if (success) {
       history.push(`/order/${order!._id}`);
     }
-  }, [history, success, userDetails, order]);
+  }, [history, success, userDetails, order, error, dispatch]);
 
   const handlePlaceOrder = (event: { preventDefault: () => void }) => {
     event.preventDefault();
@@ -45,7 +50,7 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
       orderItems: cartItems,
       shippingAddress,
       paymentMethod,
-      itemsPrice,
+      itemsPrice: Number(itemsPrice),
       taxPrice: Number(taxPrice),
       shippingPrice: Number(shippingPrice),
       totalPrice,
@@ -53,13 +58,12 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
     dispatch(createOrder(order, userDetails.token));
   };
 
-  const itemsPrice = cartItems.reduce(
-    (acc, item) => acc + item.price * item.qty!,
-    0
-  );
+  const itemsPrice = cartItems
+    .reduce((acc, item) => acc + item.price * item.qty!, 0)
+    .toFixed(2);
   const shippingPrice = addDecimals(Number(itemsPrice) > 100 ? 0 : 100);
 
-  const taxPrice = (0.15 * itemsPrice).toFixed(2);
+  const taxPrice = (0.15 * Number(itemsPrice)).toFixed(2);
 
   const totalPrice =
     Number(itemsPrice) + Number(shippingPrice) + Number(taxPrice);
@@ -104,7 +108,8 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
                         <Link to={`/product/${item._id}`}>{item.name}</Link>
                       </Col>
                       <Col md={4}>
-                        {item.qty} x ${item.price} = ${item.qty! * item.price}
+                        {item.qty} x ${item.price} = $
+                        {(item.qty! * item.price).toFixed(2)}
                       </Col>
                     </Row>
                   </ListGroup.Item>
@@ -143,7 +148,9 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
                   <Col>${totalPrice.toFixed(2)}</Col>
                 </Row>
               </ListGroup.Item>
-              {error && <AlertMessage variant="danger">{error}</AlertMessage>}
+              {error && (
+                <AlertMessage variant="danger">{error.msg}</AlertMessage>
+              )}
               <ListGroup.Item>
                 <Button
                   type="button"
@@ -162,4 +169,4 @@ const OrderPage: React.FC<OrderProps> = ({ history }) => {
   );
 };
 
-export default OrderPage;
+export default PlaceOrderPage;

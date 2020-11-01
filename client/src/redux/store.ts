@@ -8,7 +8,10 @@ import {
 import { cartReducer } from "./reducers/cart-reducer";
 import { IInitialState } from "../types/main-interfaces";
 import { userProfileReducer, userReducer } from "./reducers/user-reducer";
-import { orderCreateReducer } from "./reducers/orders-reducer";
+import {
+  orderCreateReducer,
+  orderDetailsReducer,
+} from "./reducers/orders-reducer";
 
 const cartItemsFromLS = localStorage.getItem("cartItems")
   ? JSON.parse(localStorage.getItem("cartItems") as string)
@@ -60,6 +63,7 @@ const rootReducer: any = combineReducers({
   loggedInUser: userReducer,
   profile: userProfileReducer,
   createdOrder: orderCreateReducer,
+  orderDetails: orderDetailsReducer,
 });
 const middlewares = [thunk];
 
