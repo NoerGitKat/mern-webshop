@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getOrderById = exports.createNewOrder = void 0;
+exports.updateOrderToPaid = exports.getOrderById = exports.createNewOrder = void 0;
 const express_validator_1 = require("express-validator");
 const Order_1 = __importDefault(require("../models/Order"));
 // @desc Create new order
@@ -63,3 +63,31 @@ const getOrderById = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
 });
 exports.getOrderById = getOrderById;
+// @desc Update order to be paid
+// @route PUT /api/orders/:id/pay
+// @access Private
+const updateOrderToPaid = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const foundOrder = yield Order_1.default.findById(id);
+        if (foundOrder) {
+            foundOrder.isPaid = true;
+            foundOrder.paidAt = new Date();
+            foundOrder.paymentDetails = {
+                id: req.body.id,
+                status: req.body.status,
+                update_time: req.body.update_time,
+                email_address: req.body.payer.email_address,
+            };
+            const updatedOrder = yield foundOrder.save();
+            return res.status(200).json(updatedOrder);
+        }
+        else {
+            return res.status(404).json([{ msg: "Product not found." }]);
+        }
+    }
+    catch (error) {
+        return res.status(500).json([{ msg: error.message }]);
+    }
+});
+exports.updateOrderToPaid = updateOrderToPaid;

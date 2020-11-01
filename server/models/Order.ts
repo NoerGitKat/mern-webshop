@@ -1,4 +1,5 @@
 import mongoose, { Mongoose } from "mongoose";
+import { IOrder } from "../types/order-types";
 
 const Schema = mongoose.Schema;
 
@@ -98,9 +99,6 @@ const orderSchema: mongoose.Schema = new Schema(
   { timestamps: true }
 );
 
-const Order: mongoose.Model<mongoose.Document, {}> = mongoose.model(
-  "Order",
-  orderSchema
-);
+const Order: mongoose.Model<IOrder> = mongoose.model("Order", orderSchema);
 
 export default Order;
