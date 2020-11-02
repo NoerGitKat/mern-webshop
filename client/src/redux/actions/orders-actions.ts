@@ -146,4 +146,12 @@ const payOrder = (
   }
 };
 
-export { createOrder, getOrderDetails };
+const resetOrderPay = () => (dispatch: Dispatch) => {
+  const resetAction = {
+    type: ORDER_PAY_RESET,
+  };
+
+  dispatch(resetAction);
+};
+
+export { createOrder, getOrderDetails, payOrder, resetOrderPay };

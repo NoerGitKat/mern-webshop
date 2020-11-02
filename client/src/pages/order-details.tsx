@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Row, Col, ListGroup, Card, Button, Image } from "react-bootstrap";
+import { PayPalButton } from "react-paypal-button-v2";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import AlertMessage from "../components/AlertMessage";
 import Loader from "../components/Loader";
-import { getOrderDetails } from "../redux/actions/orders-actions";
+import {
+  getOrderDetails,
+  payOrder,
+  resetOrderPay,
+} from "../redux/actions/orders-actions";
 import { logUserOut } from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
 import { IProduct } from "../types/products-interfaces";
@@ -32,6 +37,11 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
   const orderPay = useSelector((state: IInitialState) => state.orderPay);
   const { success, loading: loadingPay } = orderPay;
 
+  const paypalSuccessHandler = (paymentResult: any) => {
+    console.log("paymentResult", paymentResult);
+    dispatch(payOrder(orderId, userDetails.token, paymentResult));
+  };
+
   useEffect(() => {
     if (error && error.msg) {
       if (error.msg === "jwt expired") {
@@ -46,16 +56,20 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
     }
 
     const addPayPalSDK = async (): Promise<void> => {
-      const response = await fetch("/api/config/paypal");
-      const clientId = await response.json();
-      const payPalScript = document.createElement("script");
-      payPalScript.type = "text/javascript";
-      payPalScript.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
-      payPalScript.async = true;
-      payPalScript.onload = () => {
-        setIsSDKReady(true);
-      };
-      document.body.appendChild(payPalScript);
+      try {
+        const response = await fetch("/api/config/paypal");
+        const clientId = await response.json();
+        const script = document.createElement("script");
+        script.type = "text/javascript";
+        script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+        script.async = true;
+        script.onload = () => {
+          setIsSDKReady(true);
+        };
+        document.body.appendChild(script);
+      } catch (error) {
+        console.log("error is...", error);
+      }
     };
 
     addPayPalSDK();
@@ -68,6 +82,7 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
     if (!userDetails) {
       history.push("/login");
     } else if (!order || order._id !== orderId || success) {
+      dispatch(resetOrderPay());
       dispatch(getOrderDetails(orderId, userDetails.token));
     } else if (!order.isPaid) {
       if (!(window as any).paypal) {
@@ -194,6 +209,16 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
                   <Col>Total</Col>
                   <Col>${order.totalPrice}</Col>
                 </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {isSDKReady && (
+                  <PayPalButton
+                    amount={order.totalPrice}
+                    onSuccess={() => {
+                      return "";
+                    }}
+                  />
+                )}
               </ListGroup.Item>
             </ListGroup>
           </Card>
