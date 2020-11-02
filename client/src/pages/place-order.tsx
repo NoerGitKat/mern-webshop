@@ -31,7 +31,6 @@ const PlaceOrderPage: React.FC<PlaceOrderProps> = ({ history }) => {
     (state: IInitialState) => state.createdOrder
   );
   const { order, loading, success, error } = createdOrder;
-  console.log("order is whut", order);
 
   useEffect(() => {
     if (!userDetails) {

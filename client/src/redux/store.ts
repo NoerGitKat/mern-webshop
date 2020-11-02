@@ -11,6 +11,7 @@ import { userProfileReducer, userReducer } from "./reducers/user-reducer";
 import {
   orderCreateReducer,
   orderDetailsReducer,
+  orderPayReducer,
 } from "./reducers/orders-reducer";
 
 const cartItemsFromLS = localStorage.getItem("cartItems")
@@ -54,6 +55,7 @@ const initialState: IInitialState = {
     error: null,
     success: false,
   },
+  orderPay: { success: false, loading: false, error: null },
 };
 
 const rootReducer: any = combineReducers({
@@ -64,6 +66,7 @@ const rootReducer: any = combineReducers({
   profile: userProfileReducer,
   createdOrder: orderCreateReducer,
   orderDetails: orderDetailsReducer,
+  orderPay: orderPayReducer,
 });
 const middlewares = [thunk];
 

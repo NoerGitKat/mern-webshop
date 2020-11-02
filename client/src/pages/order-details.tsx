@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Row, Col, ListGroup, Card, Button, Image } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -17,6 +17,8 @@ interface OrderDetailsProps {
 const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
   const orderId = match.params.id;
 
+  const [isSDKReady, setIsSDKReady] = useState(false);
+
   const dispatch = useDispatch();
 
   const orderDetails = useSelector((state: any) => state.orderDetails);
@@ -26,6 +28,9 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
     (state: IInitialState) => state.loggedInUser
   );
   const { userDetails } = loggedInUser;
+
+  const orderPay = useSelector((state: IInitialState) => state.orderPay);
+  const { success, loading: loadingPay } = orderPay;
 
   useEffect(() => {
     if (error && error.msg) {
@@ -40,6 +45,21 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
       }
     }
 
+    const addPayPalSDK = async (): Promise<void> => {
+      const response = await fetch("/api/config/paypal");
+      const clientId = await response.json();
+      const payPalScript = document.createElement("script");
+      payPalScript.type = "text/javascript";
+      payPalScript.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`;
+      payPalScript.async = true;
+      payPalScript.onload = () => {
+        setIsSDKReady(true);
+      };
+      document.body.appendChild(payPalScript);
+    };
+
+    addPayPalSDK();
+
     // Redirect to home if orderId is invalid
     if (!orderId.match(/^[0-9a-fA-F]{24}$/)) {
       history.push("/");
@@ -47,10 +67,16 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
 
     if (!userDetails) {
       history.push("/login");
-    } else if (!order || order._id !== orderId) {
+    } else if (!order || order._id !== orderId || success) {
       dispatch(getOrderDetails(orderId, userDetails.token));
+    } else if (!order.isPaid) {
+      if (!(window as any).paypal) {
+        addPayPalSDK();
+      } else {
+        setIsSDKReady(true);
+      }
     }
-  }, [userDetails, order, dispatch, history, orderId, error]);
+  }, [userDetails, order, dispatch, history, orderId, error, success]);
 
   return loading ? (
     <Loader />
@@ -128,7 +154,8 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
                           <Link to={`/product/${item._id}`}>{item.name}</Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty! * item.price}
+                          {item.qty} x ${item.price} = $
+                          {(item.qty! * item.price).toFixed(2)}
                         </Col>
                       </Row>
                     </ListGroup.Item>

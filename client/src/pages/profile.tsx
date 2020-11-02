@@ -47,7 +47,6 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
   useEffect(() => {
     if (error && error.msg) {
       if (error.msg === "jwt expired") {
-        console.log("hello 2");
         dispatch(logUserOut());
         history.push("/login");
       } else if (error.msg === "invalid signature") {

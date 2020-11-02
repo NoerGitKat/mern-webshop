@@ -8,6 +8,7 @@ interface IInitialState {
   profile: { userProfile: IUser; loading: boolean; error: any };
   cart: ICartAction;
   createdOrder: IOrderAction;
+  orderPay: { success: boolean; loading: boolean; error: any };
 }
 
 export type { IInitialState };
