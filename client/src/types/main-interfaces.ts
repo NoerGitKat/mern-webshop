@@ -1,5 +1,5 @@
 import { ICartAction, IShippingAddress } from "./cart-interfaces";
-import { IOrderAction } from "./orders-interfaces";
+import { IOrder, IOrderAction } from "./orders-interfaces";
 import { IUser } from "./user-interfaces";
 
 interface IInitialState {
@@ -9,6 +9,7 @@ interface IInitialState {
   cart: ICartAction;
   createdOrder: IOrderAction;
   orderPay: { success: boolean; loading: boolean; error: any };
+  myOrders: { orders: IOrder[]; loading: boolean; error: any };
 }
 
 export type { IInitialState };

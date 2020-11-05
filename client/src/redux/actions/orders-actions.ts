@@ -11,6 +11,9 @@ import {
   ORDER_PAY_SUCCESS,
   ORDER_PAY_FAIL,
   ORDER_PAY_RESET,
+  ORDER_MYORDERS_REQUEST,
+  ORDER_MYORDERS_SUCCESS,
+  ORDER_MYORDERS_FAIL,
 } from "./../constants/constants";
 
 const createOrder = (orderData: IOrder, token: string) => async (
@@ -154,4 +157,37 @@ const resetOrderPay = () => (dispatch: Dispatch) => {
   dispatch(resetAction);
 };
 
-export { createOrder, getOrderDetails, payOrder, resetOrderPay };
+const getMyOrders = (token: string) => async (dispatch: Dispatch) => {
+  const reqAction = { type: ORDER_MYORDERS_REQUEST };
+  dispatch(reqAction);
+  try {
+    const request = {
+      method: "GET",
+      headers: { Authorization: `Bearer ${token}` },
+    };
+
+    const response = await fetch("/api/orders/myorders", request);
+    const parsedResponse = await response.json();
+
+    if (!parsedResponse[0].msg) {
+      const successAction = {
+        type: ORDER_MYORDERS_SUCCESS,
+        payload: parsedResponse,
+      };
+      dispatch(successAction);
+    } else {
+      const failAction = {
+        type: ORDER_MYORDERS_FAIL,
+        error: parsedResponse,
+      };
+      dispatch(failAction);
+    }
+  } catch (error) {
+    console.log("parsedResponse error is", error);
+
+    const failAction = { type: ORDER_MYORDERS_FAIL, error };
+    dispatch(failAction);
+  }
+};
+
+export { createOrder, getOrderDetails, payOrder, resetOrderPay, getMyOrders };

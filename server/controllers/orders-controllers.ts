@@ -92,4 +92,18 @@ const updateOrderToPaid = async (req: Request, res: Response) => {
   }
 };
 
-export { createNewOrder, getOrderById, updateOrderToPaid };
+const getMyOrders = async (req: Request, res: Response) => {
+  try {
+    const orders = await Order.find({ user: req.user?.id });
+
+    if (orders) {
+      return res.status(200).json(orders);
+    } else {
+      return res.status(404).json([{ msg: "No orders found!" }]);
+    }
+  } catch (error) {
+    return res.status(500).json([{ msg: error.message }]);
+  }
+};
+
+export { createNewOrder, getOrderById, updateOrderToPaid, getMyOrders };

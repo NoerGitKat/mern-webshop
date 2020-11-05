@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateOrderToPaid = exports.getOrderById = exports.createNewOrder = void 0;
+exports.getMyOrders = exports.updateOrderToPaid = exports.getOrderById = exports.createNewOrder = void 0;
 const express_validator_1 = require("express-validator");
 const Order_1 = __importDefault(require("../models/Order"));
 // @desc Create new order
@@ -91,3 +91,19 @@ const updateOrderToPaid = (req, res) => __awaiter(void 0, void 0, void 0, functi
     }
 });
 exports.updateOrderToPaid = updateOrderToPaid;
+const getMyOrders = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    try {
+        const orders = yield Order_1.default.find({ user: (_b = req.user) === null || _b === void 0 ? void 0 : _b.id });
+        if (orders) {
+            return res.status(200).json(orders);
+        }
+        else {
+            return res.status(404).json([{ msg: "No orders found!" }]);
+        }
+    }
+    catch (error) {
+        return res.status(500).json([{ msg: error.message }]);
+    }
+});
+exports.getMyOrders = getMyOrders;

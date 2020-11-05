@@ -10,6 +10,17 @@ interface IOrder {
   taxPrice: number;
   shippingPrice: number;
   totalPrice: number;
+  paymentDetails?: {
+    id: string;
+    status: string;
+    update_time: string;
+    email_address: string;
+  };
+  createdAt?: Date;
+  isPaid?: boolean;
+  paidAt?: Date;
+  isDelivered?: Boolean;
+  deliveredAt?: Date;
 }
 
 interface IOrderAction {

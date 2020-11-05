@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Button, Col, Form, Row } from "react-bootstrap";
+import { Button, Col, Form, Row, Table } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 import AlertMessage from "../components/AlertMessage";
 import Loader from "../components/Loader";
+import TableBody from "../components/TableBody";
+import TableHead from "../components/TableHead";
+import { getMyOrders } from "../redux/actions/orders-actions";
 import {
   getProfile,
   logUserOut,
@@ -32,24 +35,39 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
   const profile = useSelector((state: IInitialState) => state.profile);
   const { loading, error, userProfile } = profile;
 
+  const myOrders = useSelector((state: IInitialState) => state.myOrders);
+  const { loading: myOrdersLoading, error: myOrdersError, orders } = myOrders;
+
   let errorMessages;
   if (error) {
     errorMessages =
       error.length >= 1
-        ? error.map((message: any, index: number) => (
+        ? error.map((error: any, index: number) => (
             <AlertMessage key={index} variant="danger">
-              {message.msg}
+              {error.msg}
+            </AlertMessage>
+          ))
+        : null;
+  }
+
+  let orderErrorMsg;
+  if (myOrdersError) {
+    orderErrorMsg =
+      myOrdersError.length >= 1
+        ? myOrdersError.map((error: any, index: number) => (
+            <AlertMessage key={index} variant="danger">
+              {error.msg}
             </AlertMessage>
           ))
         : null;
   }
 
   useEffect(() => {
-    if (error && error.msg) {
-      if (error.msg === "jwt expired") {
+    if (error && error[0].msg) {
+      if (error[0].msg === "jwt expired") {
         dispatch(logUserOut());
         history.push("/login");
-      } else if (error.msg === "invalid signature") {
+      } else if (error[0].msg === "invalid signature") {
         dispatch(logUserOut());
         history.push("/login");
       }
@@ -60,6 +78,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
     } else {
       if (userProfile.username.length <= 1) {
         dispatch(getProfile(userDetails.token));
+        dispatch(getMyOrders(userDetails.token));
       } else {
         setUsername(userProfile.username as string);
         setEmail(userProfile.email as string);
@@ -129,6 +148,16 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
       </Col>
       <Col md={9}>
         <h2>Your Orders</h2>
+        {myOrdersLoading ? (
+          <Loader />
+        ) : myOrdersError ? (
+          orderErrorMsg
+        ) : (
+          <Table striped bordered hover responsive className="table-sm">
+            <TableHead />
+            <TableBody data={orders} />
+          </Table>
+        )}
       </Col>
     </Row>
   );

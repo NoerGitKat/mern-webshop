@@ -25,13 +25,13 @@ const checkAuth = async (
 
         next();
       } else {
-        return res.status(401).json({ msg: "Please login again." });
+        return res.status(401).json([{ msg: "Please login again." }]);
       }
     } catch (error) {
-      return res.status(500).json({ msg: error.message });
+      return res.status(500).json([{ msg: error.message }]);
     }
   } else {
-    return res.status(401).json({ msg: "You must login first." });
+    return res.status(401).json([{ msg: "You must login first." }]);
   }
 };
 

@@ -9,6 +9,7 @@ import { cartReducer } from "./reducers/cart-reducer";
 import { IInitialState } from "../types/main-interfaces";
 import { userProfileReducer, userReducer } from "./reducers/user-reducer";
 import {
+  myOrdersReducer,
   orderCreateReducer,
   orderDetailsReducer,
   orderPayReducer,
@@ -56,6 +57,7 @@ const initialState: IInitialState = {
     success: false,
   },
   orderPay: { success: false, loading: false, error: null },
+  myOrders: { orders: [], loading: false, error: null },
 };
 
 const rootReducer: any = combineReducers({
@@ -67,6 +69,7 @@ const rootReducer: any = combineReducers({
   createdOrder: orderCreateReducer,
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
+  myOrders: myOrdersReducer,
 });
 const middlewares = [thunk];
 
