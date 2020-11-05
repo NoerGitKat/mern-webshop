@@ -12,6 +12,7 @@ import {
   updateProfile,
 } from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
+import { IOrder } from "../types/orders-interfaces";
 
 interface ProfileProps {
   history: {
@@ -76,9 +77,9 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
     if (!userDetails) {
       history.push("/login");
     } else {
-      if (userProfile.username.length <= 1) {
-        dispatch(getProfile(userDetails.token));
+      if (!userProfile || !userProfile.username) {
         dispatch(getMyOrders(userDetails.token));
+        dispatch(getProfile(userDetails.token));
       } else {
         setUsername(userProfile.username as string);
         setEmail(userProfile.email as string);
@@ -86,7 +87,7 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
         setConfirmPassword("");
       }
     }
-  }, [dispatch, history, userDetails, userProfile, error]);
+  }, [dispatch, history, userDetails, userProfile, error, orders]);
 
   const updateProfileHandler = (event: any) => {
     event.preventDefault();
@@ -148,15 +149,16 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
       </Col>
       <Col md={9}>
         <h2>Your Orders</h2>
+        {myOrdersError && orderErrorMsg}
         {myOrdersLoading ? (
           <Loader />
-        ) : myOrdersError ? (
-          orderErrorMsg
-        ) : (
+        ) : orders.length > 0 ? (
           <Table striped bordered hover responsive className="table-sm">
             <TableHead />
             <TableBody data={orders} />
           </Table>
+        ) : (
+          orders.length === 0 && <p>There are no orders yet.</p>
         )}
       </Col>
     </Row>

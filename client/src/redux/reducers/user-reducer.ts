@@ -10,6 +10,7 @@ import {
   USER_GET_PROFILE_REQUEST,
   USER_GET_PROFILE_SUCCESS,
   USER_GET_PROFILE_FAIL,
+  USER_GET_PROFILE_RESET,
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
@@ -54,6 +55,8 @@ const userProfileReducer = (state = {}, action: IUserAction) => {
       return { ...state, loading: false, userProfile: action.payload };
     case USER_GET_PROFILE_FAIL:
       return { ...state, loading: false, error: action.error };
+    case USER_GET_PROFILE_RESET:
+      return { ...state, userProfile: {} };
     case USER_UPDATE_PROFILE_REQUEST:
       return { ...state, loading: true };
     case USER_UPDATE_PROFILE_SUCCESS:

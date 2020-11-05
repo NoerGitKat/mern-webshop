@@ -168,6 +168,7 @@ const getMyOrders = (token: string) => async (dispatch: Dispatch) => {
 
     const response = await fetch("/api/orders/myorders", request);
     const parsedResponse = await response.json();
+    // console.log("parsedResponse  is", parsedResponse);
 
     if (!parsedResponse[0].msg) {
       const successAction = {
@@ -183,8 +184,6 @@ const getMyOrders = (token: string) => async (dispatch: Dispatch) => {
       dispatch(failAction);
     }
   } catch (error) {
-    console.log("parsedResponse error is", error);
-
     const failAction = { type: ORDER_MYORDERS_FAIL, error };
     dispatch(failAction);
   }

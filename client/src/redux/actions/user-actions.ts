@@ -13,6 +13,8 @@ import {
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
   USER_UPDATE_PROFILE_FAIL,
+  USER_GET_PROFILE_RESET,
+  ORDER_MYORDERS_RESET,
 } from "../constants/constants";
 
 const logUserIn = (credentials: ICredentials) => async (
@@ -70,6 +72,16 @@ const logUserOut = () => (dispatch: (arg0: { type: string }) => void) => {
     type: USER_LOGOUT,
   };
 
+  const resetProfileAction = {
+    type: USER_GET_PROFILE_RESET,
+  };
+
+  const resetMyOrdersAction = {
+    type: ORDER_MYORDERS_RESET,
+  };
+
+  dispatch(resetProfileAction);
+  dispatch(resetMyOrdersAction);
   dispatch(logoutAction);
 
   localStorage.removeItem("userDetails");
