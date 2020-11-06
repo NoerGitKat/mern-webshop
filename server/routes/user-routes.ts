@@ -4,7 +4,9 @@ import {
   getUserProfile,
   createUser,
   updateUserProfile,
+  getAllUsers,
 } from "../controllers/users-controllers";
+import checkAdmin from "../middlewares/check-admin";
 import checkAuth from "../middlewares/check-auth";
 import {
   validateLogin,
@@ -14,6 +16,7 @@ import {
 
 const usersRouter: Router = Router();
 
+usersRouter.route("/").get(checkAuth as any, checkAdmin, getAllUsers);
 usersRouter.route("/login").post(validateLogin, loginUser);
 usersRouter
   .route("/profile")

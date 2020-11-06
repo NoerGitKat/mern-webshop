@@ -5,10 +5,26 @@ import generateToken from "../util/generate-token";
 import hashPassword from "../util/hash-password";
 import User from "./../models/User";
 
+// @desc Get all users
+// @route GET /api/users
+// @access  Private (admin)
+const getAllUsers = async (req: Request, res: Response) => {
+  try {
+    const users = await User.find({});
+    if (users) {
+      return res.status(200).json(users);
+    } else {
+      return res.status(404).json([{ msg: "No users found." }]);
+    }
+  } catch (error) {
+    return res.status(500).json([{ msg: error.message }]);
+  }
+};
+
 // @desc Log user in
 // @route POST /api/users/login
 // @access  Public
-const loginUser = async (req: Request, res: Response, next: NextFunction) => {
+const loginUser = async (req: Request, res: Response) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     return res.status(422).json(errors);
@@ -52,11 +68,7 @@ const loginUser = async (req: Request, res: Response, next: NextFunction) => {
 // @desc Get user profile
 // @route GET /api/users/profile
 // @access  Private
-const getUserProfile = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
+const getUserProfile = async (req: Request, res: Response) => {
   try {
     const user: any = await User.findById(req.user?.id);
 
@@ -175,4 +187,10 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
-export { loginUser, getUserProfile, createUser, updateUserProfile };
+export {
+  loginUser,
+  getUserProfile,
+  createUser,
+  updateUserProfile,
+  getAllUsers,
+};

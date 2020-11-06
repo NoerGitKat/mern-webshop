@@ -12,15 +12,33 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserProfile = exports.createUser = exports.getUserProfile = exports.loginUser = void 0;
+exports.getAllUsers = exports.updateUserProfile = exports.createUser = exports.getUserProfile = exports.loginUser = void 0;
 const express_validator_1 = require("express-validator");
 const generate_token_1 = __importDefault(require("../util/generate-token"));
 const hash_password_1 = __importDefault(require("../util/hash-password"));
 const User_1 = __importDefault(require("./../models/User"));
+// @desc Get all users
+// @route GET /api/users
+// @access  Private (admin)
+const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const users = yield User_1.default.find({});
+        if (users) {
+            return res.status(200).json(users);
+        }
+        else {
+            return res.status(404).json([{ msg: "No users found." }]);
+        }
+    }
+    catch (error) {
+        return res.status(500).json([{ msg: error.message }]);
+    }
+});
+exports.getAllUsers = getAllUsers;
 // @desc Log user in
 // @route POST /api/users/login
 // @access  Public
-const loginUser = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const loginUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const errors = express_validator_1.validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(422).json(errors);
@@ -60,7 +78,7 @@ exports.loginUser = loginUser;
 // @desc Get user profile
 // @route GET /api/users/profile
 // @access  Private
-const getUserProfile = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const user = yield User_1.default.findById((_a = req.user) === null || _a === void 0 ? void 0 : _a.id);
