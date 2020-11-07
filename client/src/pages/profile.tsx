@@ -95,7 +95,13 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
   const updateProfileHandler = (event: any) => {
     event.preventDefault();
 
-    dispatch(updateProfile(userDetails.token, { username, email, password }));
+    dispatch(
+      updateProfile(userDetails.token, {
+        username,
+        email,
+        password,
+      })
+    );
   };
 
   return (

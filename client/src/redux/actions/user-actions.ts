@@ -199,9 +199,11 @@ const getProfile = (token: string, id: string) => async (
   }
 };
 
-const updateProfile = (token: string, credentials: ICredentials) => async (
-  dispatch: any
-) => {
+const updateProfile = (
+  token: string,
+  credentials: ICredentials,
+  id?: string
+) => async (dispatch: any) => {
   const reqAction = {
     type: USER_UPDATE_PROFILE_REQUEST,
   };
@@ -209,6 +211,8 @@ const updateProfile = (token: string, credentials: ICredentials) => async (
   dispatch(reqAction);
 
   try {
+    const endpoint = id ? `/api/users/${id}` : `/api/users/profile`;
+
     const request = {
       method: "PUT",
       headers: {
@@ -218,7 +222,7 @@ const updateProfile = (token: string, credentials: ICredentials) => async (
       body: JSON.stringify(credentials),
     };
 
-    const response = await fetch("/api/users/profile", request);
+    const response = await fetch(endpoint, request);
     const parsedResponse = await response.json();
 
     if (parsedResponse._id) {

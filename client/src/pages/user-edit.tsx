@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import AlertMessage from "../components/AlertMessage";
 import FormContainer from "../components/FormContainer";
 import Loader from "../components/Loader";
-import { getProfile } from "../redux/actions/user-actions";
+import { getProfile, updateProfile } from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
 
 interface UserEditProps {
@@ -42,17 +42,25 @@ const UserEditPage: React.FC<UserEditProps> = ({ history, match }) => {
   }
 
   useEffect(() => {
-    if (!userProfile.username || userProfile._id !== userId) {
-      dispatch(getProfile(userDetails.token, userId));
+    if (!userDetails) {
+      history.push("/login");
     } else {
-      setUsername(userProfile.username);
-      setEmail(userProfile.email);
-      setIsAdmin(userProfile.isAdmin);
+      if (!userProfile.username || userProfile._id !== userId) {
+        dispatch(getProfile(userDetails.token, userId));
+      } else {
+        setUsername(userProfile.username);
+        setEmail(userProfile.email);
+        setIsAdmin(userProfile.isAdmin);
+      }
     }
-  }, [userProfile, dispatch, userId, userDetails.token]);
+  }, [userProfile, dispatch, userId, history, userDetails]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
+    dispatch(
+      updateProfile(userDetails.token, { username, email, isAdmin }, userId)
+    );
   };
 
   return (
