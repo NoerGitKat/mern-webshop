@@ -1,6 +1,7 @@
 import { resolveSoa } from "dns";
 import { NextFunction, Request, Response } from "express";
 import { validationResult } from "express-validator";
+import { IUser } from "../types/user-types";
 import generateToken from "../util/generate-token";
 import hashPassword from "../util/hash-password";
 import User from "./../models/User";
@@ -207,6 +208,59 @@ const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+// @desc Get user by id
+// @route GET /api/users/:id
+// @access Private (admin)
+const getUserById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const foundUser = await User.findById(id).select("-password");
+    if (foundUser) {
+      return res.status(200).json(foundUser);
+    } else {
+      return res.status(404).json([{ msg: "User not found." }]);
+    }
+  } catch (error) {
+    return res.status(500).json([{ msg: error.msg }]);
+  }
+};
+
+// @desc Update user by id
+// @route PUT /api/users/:id
+// @access Private (admin)
+const updateUserById = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { username, email, isAdmin } = req.body;
+
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json(errors);
+  }
+
+  try {
+    const foundUser: any = await User.findById(id).select("-password");
+
+    if (foundUser) {
+      foundUser.username = username || foundUser.username;
+      foundUser.email = email || foundUser.email;
+      foundUser.isAdmin = isAdmin;
+
+      const updatedUser = await foundUser.save();
+
+      return res.status(200).json({
+        _id: updatedUser._id,
+        username: updatedUser.username,
+        email: updatedUser.email,
+        isAdmin: updatedUser.isAdmin,
+      });
+    } else {
+      return res.status(404).json([{ msg: "Couldn't find user." }]);
+    }
+  } catch (error) {
+    return res.status(500).json([{ msg: error.msg }]);
+  }
+};
+
 export {
   loginUser,
   getUserProfile,
@@ -214,4 +268,6 @@ export {
   updateUserProfile,
   getAllUsers,
   deleteUser,
+  getUserById,
+  updateUserById,
 };

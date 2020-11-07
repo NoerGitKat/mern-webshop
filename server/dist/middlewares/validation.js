@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateOrder = exports.validateUpdateProfile = exports.validateRegister = exports.validateLogin = void 0;
+exports.validateUpdateUser = exports.validateOrder = exports.validateUpdateProfile = exports.validateRegister = exports.validateLogin = void 0;
 const express_validator_1 = require("express-validator");
 const validateLogin = [
     express_validator_1.check("email").isEmail().withMessage("Fill in a valid email address!"),
@@ -31,7 +31,7 @@ exports.validateUpdateProfile = validateUpdateProfile;
 const validateOrder = [
     express_validator_1.check("orderItems").exists(),
     express_validator_1.check("shippingAddress").exists(),
-    express_validator_1.check("paymentMethod").isString().withMessage(""),
+    express_validator_1.check("paymentMethod").isString(),
     express_validator_1.check("itemsPrice")
         .isNumeric()
         .withMessage("Items price should be a number."),
@@ -44,3 +44,12 @@ const validateOrder = [
         .withMessage("Total price should be a number."),
 ];
 exports.validateOrder = validateOrder;
+const validateUpdateUser = [
+    express_validator_1.check("username").isString().withMessage("Fill in a valid username."),
+    express_validator_1.check("email").isEmail().withMessage("Fill in a valid email."),
+    express_validator_1.check("isAdmin")
+        .isBoolean()
+        .optional({ checkFalsy: true })
+        .withMessage("Fill in a valid username."),
+];
+exports.validateUpdateUser = validateUpdateUser;

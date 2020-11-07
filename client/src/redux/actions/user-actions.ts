@@ -264,6 +264,12 @@ const getAllUsers = (token: string) => async (dispatch: Dispatch) => {
         payload: parsedResponse,
       };
       dispatch(successAction);
+    } else {
+      const failAction = {
+        type: USER_GET_ALL_FAIL,
+        error: parsedResponse[0].msg,
+      };
+      dispatch(failAction);
     }
   } catch (error) {
     const failAction = { type: USER_GET_ALL_FAIL, error };

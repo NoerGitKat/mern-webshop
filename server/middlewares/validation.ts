@@ -37,7 +37,7 @@ const validateUpdateProfile = [
 const validateOrder = [
   check("orderItems").exists(),
   check("shippingAddress").exists(),
-  check("paymentMethod").isString().withMessage(""),
+  check("paymentMethod").isString(),
   check("itemsPrice")
     .isNumeric()
     .withMessage("Items price should be a number."),
@@ -50,9 +50,19 @@ const validateOrder = [
     .withMessage("Total price should be a number."),
 ];
 
+const validateUpdateUser = [
+  check("username").isString().withMessage("Fill in a valid username."),
+  check("email").isEmail().withMessage("Fill in a valid email."),
+  check("isAdmin")
+    .isBoolean()
+    .optional({ checkFalsy: true })
+    .withMessage("Fill in a valid username."),
+];
+
 export {
   validateLogin,
   validateRegister,
   validateUpdateProfile,
   validateOrder,
+  validateUpdateUser,
 };

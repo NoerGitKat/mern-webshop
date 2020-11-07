@@ -4,7 +4,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import Loader from "../components/Loader";
 import TableHead from "../components/TableHead";
-import { deleteUser, getAllUsers } from "../redux/actions/user-actions";
+import {
+  deleteUser,
+  getAllUsers,
+  logUserOut,
+} from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
 
 interface UserListProps {
@@ -25,12 +29,13 @@ const UserListPage: React.FC<UserListProps> = ({ history }) => {
   const { users, loading, error, successDelete } = userList;
 
   useEffect(() => {
-    if (userDetails && userDetails.isAdmin) {
+    if (userDetails && userDetails.isAdmin && error !== "jwt expired") {
       dispatch(getAllUsers(userDetails.token));
     } else {
+      dispatch(logUserOut());
       history.push("/");
     }
-  }, [dispatch, history, userDetails, successDelete]);
+  }, [dispatch, history, userDetails, successDelete, error]);
 
   const handleDelete = (token: string, id: string) => {
     if (window.confirm("Are you sure you want to remove this user?"))

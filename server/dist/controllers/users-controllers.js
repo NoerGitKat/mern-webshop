@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUser = exports.getAllUsers = exports.updateUserProfile = exports.createUser = exports.getUserProfile = exports.loginUser = void 0;
+exports.updateUserById = exports.getUserById = exports.deleteUser = exports.getAllUsers = exports.updateUserProfile = exports.createUser = exports.getUserProfile = exports.loginUser = void 0;
 const express_validator_1 = require("express-validator");
 const generate_token_1 = __importDefault(require("../util/generate-token"));
 const hash_password_1 = __importDefault(require("../util/hash-password"));
@@ -215,3 +215,55 @@ const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.deleteUser = deleteUser;
+// @desc Get user by id
+// @route GET /api/users/:id
+// @access Private (admin)
+const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const foundUser = yield User_1.default.findById(id).select("-password");
+        if (foundUser) {
+            return res.status(200).json(foundUser);
+        }
+        else {
+            return res.status(404).json([{ msg: "User not found." }]);
+        }
+    }
+    catch (error) {
+        return res.status(500).json([{ msg: error.msg }]);
+    }
+});
+exports.getUserById = getUserById;
+// @desc Update user by id
+// @route PUT /api/users/:id
+// @access Private (admin)
+const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    const { username, email, isAdmin } = req.body;
+    const errors = express_validator_1.validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json(errors);
+    }
+    try {
+        const foundUser = yield User_1.default.findById(id).select("-password");
+        if (foundUser) {
+            foundUser.username = username || foundUser.username;
+            foundUser.email = email || foundUser.email;
+            foundUser.isAdmin = isAdmin;
+            const updatedUser = yield foundUser.save();
+            return res.status(200).json({
+                _id: updatedUser._id,
+                username: updatedUser.username,
+                email: updatedUser.email,
+                isAdmin: updatedUser.isAdmin,
+            });
+        }
+        else {
+            return res.status(404).json([{ msg: "Couldn't find user." }]);
+        }
+    }
+    catch (error) {
+        return res.status(500).json([{ msg: error.msg }]);
+    }
+});
+exports.updateUserById = updateUserById;
