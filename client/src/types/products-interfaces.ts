@@ -20,13 +20,13 @@ interface IProductAction {
 
 interface IProductDetails {
   product: IProduct;
-  loading: Boolean;
+  loading: boolean;
   error: any;
 }
 
 interface IProductList {
   products: IProduct[];
-  loading: Boolean;
+  loading: boolean;
   error: any;
 }
 

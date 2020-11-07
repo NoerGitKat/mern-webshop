@@ -157,8 +157,8 @@ const registerUser = (credentials: ICredentials) => async (dispatch: any) => {
   }
 };
 
-const getProfile = (token: string) => async (
-  dispatch: (arg0: { type: string }) => void
+const getProfile = (token: string, id: string) => async (
+  dispatch: Dispatch
 ) => {
   const reqAction = {
     type: USER_GET_PROFILE_REQUEST,
@@ -174,7 +174,7 @@ const getProfile = (token: string) => async (
       },
     };
 
-    const response = await fetch("/api/users/profile", request);
+    const response = await fetch(`/api/users/${id}`, request);
     const parsedResponse = await response.json();
 
     if (parsedResponse._id) {

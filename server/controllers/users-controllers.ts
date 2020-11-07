@@ -66,30 +66,6 @@ const loginUser = async (req: Request, res: Response) => {
   }
 };
 
-// @desc Get user profile
-// @route GET /api/users/profile
-// @access  Private
-const getUserProfile = async (req: Request, res: Response) => {
-  try {
-    const user: any = await User.findById(req.user?.id);
-
-    if (user) {
-      return res.status(200).json({
-        _id: user._id,
-        username: user.username,
-        email: user.email,
-        isAdmin: user.isAdmin,
-      });
-    } else {
-      return res.status(404).json([{ msg: "User not found." }]);
-    }
-  } catch (error) {
-    return res
-      .status(500)
-      .json([{ msg: "Something went wrong. Try again later." }]);
-  }
-};
-
 // @desc Update user profile
 // @route PUT /api/users/profile
 // @access Private
@@ -263,7 +239,6 @@ const updateUserById = async (req: Request, res: Response) => {
 
 export {
   loginUser,
-  getUserProfile,
   createUser,
   updateUserProfile,
   getAllUsers,

@@ -12,7 +12,6 @@ import {
   updateProfile,
 } from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
-import { IOrder } from "../types/orders-interfaces";
 
 interface ProfileProps {
   history: {
@@ -77,9 +76,13 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
     if (!userDetails) {
       history.push("/login");
     } else {
-      if (!userProfile || !userProfile.username) {
+      if (
+        userProfile._id !== userDetails._id ||
+        !userProfile ||
+        !userProfile.username
+      ) {
         dispatch(getMyOrders(userDetails.token));
-        dispatch(getProfile(userDetails.token));
+        dispatch(getProfile(userDetails.token, userDetails._id as string));
       } else {
         setUsername(userProfile.username as string);
         setEmail(userProfile.email as string);

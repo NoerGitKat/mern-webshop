@@ -1,14 +1,14 @@
 interface IUser {
   _id?: string;
-  username: String;
-  email: String;
-  password: String;
-  isAdmin: Boolean;
+  username: string;
+  email: string;
+  password: string;
+  isAdmin: boolean;
   token: string;
 }
 
 interface IUserAction {
-  loading: Boolean;
+  loading: boolean;
   type: string;
   payload: IUser;
   error: string;

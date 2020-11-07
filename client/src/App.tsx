@@ -17,6 +17,7 @@ import PaymentPage from "./pages/payment";
 import OrderDetailsPage from "./pages/order-details";
 import PlaceOrderPage from "./pages/place-order";
 import UserListPage from "./pages/user-list";
+import UserEditPage from "./pages/user-edit";
 
 function App(): JSX.Element {
   return (
@@ -34,6 +35,7 @@ function App(): JSX.Element {
           <Route exact path="/profile" component={ProfilePage} />
           <Route exact path="/cart/:id?" component={CartPage} />
           <Route exact path="/admin/users" component={UserListPage} />
+          <Route exact path="/admin/users/:id/edit" component={UserEditPage} />
           <Route exact path="/" component={HomePage} />
         </Switch>
       </Container>

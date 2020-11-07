@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Row, Col, ListGroup, Card, Button, Image } from "react-bootstrap";
+import { Row, Col, ListGroup, Card, Image } from "react-bootstrap";
 import { PayPalButton } from "react-paypal-button-v2";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -35,10 +35,9 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
   const { userDetails } = loggedInUser;
 
   const orderPay = useSelector((state: IInitialState) => state.orderPay);
-  const { success, loading: loadingPay } = orderPay;
+  const { success } = orderPay;
 
   const paypalSuccessHandler = (paymentResult: any) => {
-    console.log("paymentResult", paymentResult);
     dispatch(payOrder(orderId, userDetails.token, paymentResult));
   };
 
@@ -214,9 +213,7 @@ const OrderDetailsPage: React.FC<OrderDetailsProps> = ({ history, match }) => {
                 {isSDKReady && (
                   <PayPalButton
                     amount={order.totalPrice}
-                    onSuccess={() => {
-                      return "";
-                    }}
+                    onSuccess={paypalSuccessHandler}
                   />
                 )}
               </ListGroup.Item>

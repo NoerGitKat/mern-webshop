@@ -1,7 +1,6 @@
 import { Router } from "express";
 import {
   loginUser,
-  getUserProfile,
   createUser,
   updateUserProfile,
   getAllUsers,
@@ -24,7 +23,6 @@ usersRouter.route("/").get(checkAuth as any, checkAdmin, getAllUsers);
 usersRouter.route("/login").post(validateLogin, loginUser);
 usersRouter
   .route("/profile")
-  .get(checkAuth as any, getUserProfile as any)
   .put(validateUpdateProfile, checkAuth as any, updateUserProfile);
 usersRouter.route("/register").post(validateRegister, createUser);
 usersRouter

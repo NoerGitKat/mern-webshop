@@ -51,7 +51,7 @@ const UserListPage: React.FC<UserListProps> = ({ history }) => {
         <TableHead tableHeaders={["ID", "NAME", "EMAIL", "ADMIN", ""]} />
         <tbody>
           {users.map((user) => (
-            <tr>
+            <tr key={user._id}>
               <td>{user._id}</td>
               <td>{user.username}</td>
               <td>
@@ -68,7 +68,7 @@ const UserListPage: React.FC<UserListProps> = ({ history }) => {
                 )}
               </td>
               <td>
-                <LinkContainer to={`/user/${user._id}/edit`}>
+                <LinkContainer to={`/admin/users/${user._id}/edit`}>
                   <Button variant="light" className="btn-sm">
                     <i className="fas fa-edit"></i>
                   </Button>

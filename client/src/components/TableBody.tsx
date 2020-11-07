@@ -1,12 +1,9 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Button } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { IOrder } from "../types/orders-interfaces";
 
 const TableBody = ({ data }: { data: IOrder[] }): JSX.Element => {
-
-  // useEffect()
-
   return (
     <tbody>
       {data.map((item: IOrder) => (

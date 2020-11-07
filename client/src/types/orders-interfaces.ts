@@ -19,7 +19,7 @@ interface IOrder {
   createdAt?: Date;
   isPaid?: boolean;
   paidAt?: Date;
-  isDelivered?: Boolean;
+  isDelivered?: boolean;
   deliveredAt?: Date;
 }
 
