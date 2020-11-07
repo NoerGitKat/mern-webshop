@@ -24,14 +24,12 @@ const UserListPage: React.FC<UserListProps> = ({ history }) => {
   const userList = useSelector((state: IInitialState) => state.userList);
   const { users, loading, error } = userList;
 
-  console.log("usersssss", users);
-
   useEffect(() => {
-    if (!userDetails || !userDetails.isAdmin) {
+    if (userDetails && userDetails.isAdmin) {
+      dispatch(getAllUsers(userDetails.token));
+    } else {
       history.push("/");
     }
-
-    dispatch(getAllUsers(userDetails.token));
   }, [dispatch, history, userDetails]);
 
   const handleDelete = (id: string | undefined) => {};

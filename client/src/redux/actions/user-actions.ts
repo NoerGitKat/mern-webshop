@@ -19,6 +19,7 @@ import {
   USER_GET_ALL_REQUEST,
   USER_GET_ALL_SUCCESS,
   USER_GET_ALL_FAIL,
+  USER_GET_ALL_RESET,
 } from "../constants/constants";
 
 const logUserIn = (credentials: ICredentials) => async (
@@ -84,8 +85,13 @@ const logUserOut = () => (dispatch: (arg0: { type: string }) => void) => {
     type: ORDER_MYORDERS_RESET,
   };
 
+  const resetUserListAction = {
+    type: USER_GET_ALL_RESET,
+  };
+
   dispatch(resetProfileAction);
   dispatch(resetMyOrdersAction);
+  dispatch(resetUserListAction);
   dispatch(logoutAction);
 
   localStorage.removeItem("userDetails");

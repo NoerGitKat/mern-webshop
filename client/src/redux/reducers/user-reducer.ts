@@ -17,6 +17,7 @@ import {
   USER_GET_ALL_REQUEST,
   USER_GET_ALL_SUCCESS,
   USER_GET_ALL_FAIL,
+  USER_GET_ALL_RESET,
 } from "../constants/constants";
 
 const userReducer = (state = {}, action: IUserAction) => {
@@ -84,6 +85,8 @@ const userListReducer = (state = {}, action: IUserAction) => {
       return { ...state, loading: false, users: action.payload };
     case USER_GET_ALL_FAIL:
       return { ...state, loading: false, error: action.error };
+    case USER_GET_ALL_RESET:
+      return { ...state, users: [] };
     default:
       return state;
   }
