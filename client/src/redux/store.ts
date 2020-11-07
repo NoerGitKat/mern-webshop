@@ -62,7 +62,7 @@ const initialState: IInitialState = {
   },
   orderPay: { success: false, loading: false, error: null },
   myOrders: { orders: [], loading: false, error: null },
-  userList: { users: [], loading: false, error: null },
+  userList: { users: [], loading: false, error: null, successDelete: false },
 };
 
 const rootReducer: any = combineReducers({

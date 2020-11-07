@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { LinkContainer } from "react-router-bootstrap";
 import Loader from "../components/Loader";
 import TableHead from "../components/TableHead";
-import { getAllUsers } from "../redux/actions/user-actions";
+import { deleteUser, getAllUsers } from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
 
 interface UserListProps {
@@ -22,7 +22,7 @@ const UserListPage: React.FC<UserListProps> = ({ history }) => {
   const { userDetails } = loggedInUser;
 
   const userList = useSelector((state: IInitialState) => state.userList);
-  const { users, loading, error } = userList;
+  const { users, loading, error, successDelete } = userList;
 
   useEffect(() => {
     if (userDetails && userDetails.isAdmin) {
@@ -30,9 +30,12 @@ const UserListPage: React.FC<UserListProps> = ({ history }) => {
     } else {
       history.push("/");
     }
-  }, [dispatch, history, userDetails]);
+  }, [dispatch, history, userDetails, successDelete]);
 
-  const handleDelete = (id: string | undefined) => {};
+  const handleDelete = (token: string, id: string) => {
+    if (window.confirm("Are you sure you want to remove this user?"))
+      dispatch(deleteUser(token, id));
+  };
 
   return (
     <>
@@ -68,7 +71,9 @@ const UserListPage: React.FC<UserListProps> = ({ history }) => {
                 <Button
                   variant="danger"
                   className="btn-sm"
-                  onClick={() => handleDelete(user._id)}
+                  onClick={() =>
+                    handleDelete(userDetails.token, user._id as string)
+                  }
                 >
                   <i className="fas fa-trash"></i>
                 </Button>

@@ -18,6 +18,9 @@ import {
   USER_GET_ALL_SUCCESS,
   USER_GET_ALL_FAIL,
   USER_GET_ALL_RESET,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
+  USER_DELETE_FAIL,
 } from "../constants/constants";
 
 const userReducer = (state = {}, action: IUserAction) => {
@@ -87,6 +90,12 @@ const userListReducer = (state = {}, action: IUserAction) => {
       return { ...state, loading: false, error: action.error };
     case USER_GET_ALL_RESET:
       return { ...state, users: [] };
+    case USER_DELETE_REQUEST:
+      return { ...state, loading: true };
+    case USER_DELETE_SUCCESS:
+      return { ...state, successDelete: true };
+    case USER_DELETE_FAIL:
+      return { ...state, error: action.error };
     default:
       return state;
   }

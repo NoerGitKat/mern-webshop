@@ -20,6 +20,9 @@ import {
   USER_GET_ALL_SUCCESS,
   USER_GET_ALL_FAIL,
   USER_GET_ALL_RESET,
+  USER_DELETE_FAIL,
+  USER_DELETE_REQUEST,
+  USER_DELETE_SUCCESS,
 } from "../constants/constants";
 
 const logUserIn = (credentials: ICredentials) => async (
@@ -270,7 +273,30 @@ const getAllUsers = (token: string) => async (dispatch: Dispatch) => {
 
 const deleteUser = (token: string, id: string) => async (
   dispatch: Dispatch
-) => {};
+) => {
+  const reqAction = { type: USER_DELETE_REQUEST };
+  dispatch(reqAction);
+
+  try {
+    const request = {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await fetch(`/api/users/${id}`, request);
+    const parsedResponse = await response.json();
+
+    if (parsedResponse[0].msg === "User successfully removed.") {
+      const successAction = { type: USER_DELETE_SUCCESS };
+      dispatch(successAction);
+    }
+  } catch (error) {
+    const failAction = { type: USER_DELETE_FAIL, error };
+    dispatch(failAction);
+  }
+};
 
 export {
   logUserIn,

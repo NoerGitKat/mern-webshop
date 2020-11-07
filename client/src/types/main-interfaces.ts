@@ -14,6 +14,7 @@ interface IInitialState {
     users: IUser[];
     loading: boolean;
     error: any;
+    successDelete: boolean;
   };
 }
 
