@@ -14,6 +14,9 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_UPDATE_PROFILE_REQUEST,
   USER_UPDATE_PROFILE_SUCCESS,
+  USER_GET_ALL_REQUEST,
+  USER_GET_ALL_SUCCESS,
+  USER_GET_ALL_FAIL,
 } from "../constants/constants";
 
 const userReducer = (state = {}, action: IUserAction) => {
@@ -73,4 +76,17 @@ const userProfileReducer = (state = {}, action: IUserAction) => {
   }
 };
 
-export { userReducer, userProfileReducer };
+const userListReducer = (state = {}, action: IUserAction) => {
+  switch (action.type) {
+    case USER_GET_ALL_REQUEST:
+      return { ...state, loading: true };
+    case USER_GET_ALL_SUCCESS:
+      return { ...state, loading: false, users: action.payload };
+    case USER_GET_ALL_FAIL:
+      return { ...state, loading: false, error: action.error };
+    default:
+      return state;
+  }
+};
+
+export { userReducer, userProfileReducer, userListReducer };

@@ -1,15 +1,16 @@
 import React from "react";
 
-const TableHead = () => {
+interface TableHeadProps {
+  tableHeaders: string[];
+}
+
+const TableHead: React.FC<TableHeadProps> = ({ tableHeaders }) => {
   return (
     <thead>
       <tr>
-        <th>ID</th>
-        <th>DATE</th>
-        <th>TOTAL</th>
-        <th>PAID</th>
-        <th>DELIVERED</th>
-        <th></th>
+        {tableHeaders.map((header: string, index: number) => (
+          <th key={index}>{header}</th>
+        ))}
       </tr>
     </thead>
   );

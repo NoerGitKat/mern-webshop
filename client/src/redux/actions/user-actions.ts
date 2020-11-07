@@ -1,3 +1,4 @@
+import { Dispatch } from "redux";
 import { ICredentials } from "../../types/user-interfaces";
 import {
   USER_LOGIN_REQUEST,
@@ -15,6 +16,9 @@ import {
   USER_UPDATE_PROFILE_FAIL,
   USER_GET_PROFILE_RESET,
   ORDER_MYORDERS_RESET,
+  USER_GET_ALL_REQUEST,
+  USER_GET_ALL_SUCCESS,
+  USER_GET_ALL_FAIL,
 } from "../constants/constants";
 
 const logUserIn = (credentials: ICredentials) => async (
@@ -230,4 +234,44 @@ const updateProfile = (token: string, credentials: ICredentials) => async (
   }
 };
 
-export { logUserIn, logUserOut, registerUser, getProfile, updateProfile };
+const getAllUsers = (token: string) => async (dispatch: Dispatch) => {
+  const reqAction = { type: USER_GET_ALL_REQUEST };
+  dispatch(reqAction);
+
+  try {
+    const request = {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await fetch("/api/users", request);
+    const parsedResponse = await response.json();
+
+    if (!parsedResponse[0].msg) {
+      const successAction = {
+        type: USER_GET_ALL_SUCCESS,
+        payload: parsedResponse,
+      };
+      dispatch(successAction);
+    }
+  } catch (error) {
+    const failAction = { type: USER_GET_ALL_FAIL, error };
+    dispatch(failAction);
+  }
+};
+
+const deleteUser = (token: string, id: string) => async (
+  dispatch: Dispatch
+) => {};
+
+export {
+  logUserIn,
+  logUserOut,
+  registerUser,
+  getProfile,
+  updateProfile,
+  getAllUsers,
+  deleteUser,
+};

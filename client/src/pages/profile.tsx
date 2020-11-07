@@ -154,7 +154,9 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
           <Loader />
         ) : orders.length > 0 ? (
           <Table striped bordered hover responsive className="table-sm">
-            <TableHead />
+            <TableHead
+              tableHeaders={["ID", "DATE", "TOTAL", "PAID", "DELIVERED", ""]}
+            />
             <TableBody data={orders} />
           </Table>
         ) : (

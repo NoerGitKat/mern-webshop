@@ -10,6 +10,11 @@ interface IInitialState {
   createdOrder: IOrderAction;
   orderPay: { success: boolean; loading: boolean; error: any };
   myOrders: { orders: IOrder[]; loading: boolean; error: any };
+  userList: {
+    users: IUser[];
+    loading: boolean;
+    error: any;
+  };
 }
 
 export type { IInitialState };

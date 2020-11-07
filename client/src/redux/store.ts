@@ -7,7 +7,11 @@ import {
 } from "./reducers/product-reducers";
 import { cartReducer } from "./reducers/cart-reducer";
 import { IInitialState } from "../types/main-interfaces";
-import { userProfileReducer, userReducer } from "./reducers/user-reducer";
+import {
+  userListReducer,
+  userProfileReducer,
+  userReducer,
+} from "./reducers/user-reducer";
 import {
   myOrdersReducer,
   orderCreateReducer,
@@ -58,6 +62,7 @@ const initialState: IInitialState = {
   },
   orderPay: { success: false, loading: false, error: null },
   myOrders: { orders: [], loading: false, error: null },
+  userList: { users: [], loading: false, error: null },
 };
 
 const rootReducer: any = combineReducers({
@@ -70,6 +75,7 @@ const rootReducer: any = combineReducers({
   orderDetails: orderDetailsReducer,
   orderPay: orderPayReducer,
   myOrders: myOrdersReducer,
+  userList: userListReducer,
 });
 const middlewares = [thunk];
 
