@@ -187,10 +187,31 @@ const createUser = async (req: Request, res: Response) => {
   }
 };
 
+// @desc Delete user
+// @route DELETE /api/users/:id
+// @access  Private (admin)
+const deleteUser = async (req: Request, res: Response) => {
+  const { id } = req.params;
+
+  try {
+    const foundUser = await User.findById(id);
+
+    if (foundUser) {
+      foundUser.remove();
+      return res.status(200).json([{ msg: "User successfully removed." }]);
+    } else {
+      return res.status(404).json([{ msg: "User doesn't exist." }]);
+    }
+  } catch (error) {
+    return res.status(500).json([{ msg: error.message }]);
+  }
+};
+
 export {
   loginUser,
   getUserProfile,
   createUser,
   updateUserProfile,
   getAllUsers,
+  deleteUser,
 };

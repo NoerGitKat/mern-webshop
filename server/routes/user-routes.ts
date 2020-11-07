@@ -5,6 +5,7 @@ import {
   createUser,
   updateUserProfile,
   getAllUsers,
+  deleteUser,
 } from "../controllers/users-controllers";
 import checkAdmin from "../middlewares/check-admin";
 import checkAuth from "../middlewares/check-auth";
@@ -23,5 +24,6 @@ usersRouter
   .get(checkAuth as any, getUserProfile as any)
   .put(validateUpdateProfile, checkAuth as any, updateUserProfile);
 usersRouter.route("/register").post(validateRegister, createUser);
+usersRouter.route("/:id").delete(checkAuth as any, checkAdmin, deleteUser);
 
 export default usersRouter;

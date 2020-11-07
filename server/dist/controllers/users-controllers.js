@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllUsers = exports.updateUserProfile = exports.createUser = exports.getUserProfile = exports.loginUser = void 0;
+exports.deleteUser = exports.getAllUsers = exports.updateUserProfile = exports.createUser = exports.getUserProfile = exports.loginUser = void 0;
 const express_validator_1 = require("express-validator");
 const generate_token_1 = __importDefault(require("../util/generate-token"));
 const hash_password_1 = __importDefault(require("../util/hash-password"));
@@ -195,3 +195,23 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
     }
 });
 exports.createUser = createUser;
+// @desc Delete user
+// @route DELETE /api/users/:id
+// @access  Private (admin)
+const deleteUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const foundUser = yield User_1.default.findById(id);
+        if (foundUser) {
+            foundUser.remove();
+            return res.status(200).json([{ msg: "User successfully removed." }]);
+        }
+        else {
+            return res.status(404).json([{ msg: "User doesn't exist." }]);
+        }
+    }
+    catch (error) {
+        return res.status(500).json([{ msg: error.message }]);
+    }
+});
+exports.deleteUser = deleteUser;

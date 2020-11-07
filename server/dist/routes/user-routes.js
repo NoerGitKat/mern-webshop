@@ -16,4 +16,5 @@ usersRouter
     .get(check_auth_1.default, users_controllers_1.getUserProfile)
     .put(validation_1.validateUpdateProfile, check_auth_1.default, users_controllers_1.updateUserProfile);
 usersRouter.route("/register").post(validation_1.validateRegister, users_controllers_1.createUser);
+usersRouter.route("/:id").delete(check_auth_1.default, check_admin_1.default, users_controllers_1.deleteUser);
 exports.default = usersRouter;
