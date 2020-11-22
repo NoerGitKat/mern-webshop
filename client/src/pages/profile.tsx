@@ -70,6 +70,9 @@ const ProfilePage: React.FC<ProfileProps> = ({ history }) => {
       } else if (error[0].msg === "invalid signature") {
         dispatch(logUserOut());
         history.push("/login");
+      } else if (error[0].msg === "User not found.") {
+        dispatch(logUserOut());
+        history.push("/login");
       }
     }
     // check if user is logged in. If not redirect to /login

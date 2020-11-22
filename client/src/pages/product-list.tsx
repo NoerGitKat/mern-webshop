@@ -19,12 +19,11 @@ const ProductListPage: React.FC<IProductListPageProps> = ({ history }) => {
   const dispatch = useDispatch();
 
   const productList = useSelector((state: IInitialState) => state.productList);
-  const { products, loading, error }: IProductList = productList;
+  const { products, loading, error, successDelete }: IProductList = productList;
 
   const loggedInUser = useSelector(
     (state: IInitialState) => state.loggedInUser
   );
-
   const { userDetails } = loggedInUser;
 
   useEffect(() => {
@@ -34,7 +33,7 @@ const ProductListPage: React.FC<IProductListPageProps> = ({ history }) => {
       dispatch(logUserOut());
       history.push("/");
     }
-  }, [dispatch, error, history, userDetails]);
+  }, [dispatch, error, history, userDetails, successDelete]);
 
   const handleDelete = (token: string, id: string) => {
     if (window.confirm("Are you sure you want to remove this product?"))

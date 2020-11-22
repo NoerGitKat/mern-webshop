@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getSingleProduct = exports.getProducts = void 0;
+exports.deleteProduct = exports.getSingleProduct = exports.getProducts = void 0;
 const Product_1 = __importDefault(require("../models/Product"));
 // @desc Fetch all products
 // @route GET /api/products
@@ -46,3 +46,23 @@ const getSingleProduct = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.getSingleProduct = getSingleProduct;
+// @desc Delete single product
+// @route DELETE /api/products/:id
+// @access Private
+const deleteProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        const foundProduct = yield Product_1.default.findById(id);
+        if (foundProduct) {
+            yield foundProduct.remove();
+            return res.status(204).json({ msg: "Product successfully removed!" });
+        }
+        else {
+            return res.status(404).json([{ msg: "Couldn't find product!" }]);
+        }
+    }
+    catch (error) {
+        return res.status(500).json([{ msg: error.msg }]);
+    }
+});
+exports.deleteProduct = deleteProduct;

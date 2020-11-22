@@ -85,7 +85,12 @@ const userListReducer = (state = {}, action: IUserAction) => {
     case USER_GET_ALL_REQUEST:
       return { ...state, loading: true };
     case USER_GET_ALL_SUCCESS:
-      return { ...state, loading: false, users: action.payload };
+      return {
+        ...state,
+        loading: false,
+        users: action.payload,
+        successDelete: false,
+      };
     case USER_GET_ALL_FAIL:
       console.log("goes here", action);
       return { ...state, loading: false, error: action.error };

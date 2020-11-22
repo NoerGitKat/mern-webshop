@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import e, { Request, Response } from "express";
 import Product from "../models/Product";
 
 // @desc Fetch all products
@@ -32,4 +32,22 @@ const getSingleProduct = async (req: Request, res: Response): Promise<void> => {
   }
 };
 
-export { getProducts, getSingleProduct };
+// @desc Delete single product
+// @route DELETE /api/products/:id
+// @access Private
+const deleteProduct = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  try {
+    const foundProduct = await Product.findById(id);
+    if (foundProduct) {
+      await foundProduct.remove();
+      return res.status(204).json({ msg: "Product successfully removed!" });
+    } else {
+      return res.status(404).json([{ msg: "Couldn't find product!" }]);
+    }
+  } catch (error) {
+    return res.status(500).json([{ msg: error.msg }]);
+  }
+};
+
+export { getProducts, getSingleProduct, deleteProduct };

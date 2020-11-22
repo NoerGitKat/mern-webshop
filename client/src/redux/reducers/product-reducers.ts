@@ -6,6 +6,9 @@ import {
   PRODUCT_LIST_FAIL,
   PRODUCT_LIST_REQUEST,
   PRODUCT_LIST_SUCCESS,
+  PRODUCT_DELETE_FAIL,
+  PRODUCT_DELETE_REQUEST,
+  PRODUCT_DELETE_SUCCESS,
 } from "../constants/constants";
 
 const productListReducer = (
@@ -20,8 +23,19 @@ const productListReducer = (
     case PRODUCT_LIST_REQUEST:
       return { ...state, loading: true };
     case PRODUCT_LIST_SUCCESS:
-      return { ...state, loading: false, products: action.payload };
+      return {
+        ...state,
+        loading: false,
+        products: action.payload,
+        successDelete: false,
+      };
     case PRODUCT_LIST_FAIL:
+      return { ...state, loading: false, error: action.error };
+    case PRODUCT_DELETE_REQUEST:
+      return { ...state, loading: true };
+    case PRODUCT_DELETE_SUCCESS:
+      return { ...state, loading: false, successDelete: true };
+    case PRODUCT_DELETE_FAIL:
       return { ...state, loading: false, error: action.error };
     default:
       return state;
