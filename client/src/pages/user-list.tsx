@@ -11,13 +11,13 @@ import {
 } from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
 
-interface UserListProps {
+interface IUserListProps {
   history: {
     push: (url: string) => void;
   };
 }
 
-const UserListPage: React.FC<UserListProps> = ({ history }) => {
+const UserListPage: React.FC<IUserListProps> = ({ history }) => {
   const dispatch = useDispatch();
   const loggedInUser = useSelector(
     (state: IInitialState) => state.loggedInUser

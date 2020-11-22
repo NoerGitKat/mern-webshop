@@ -27,7 +27,7 @@ usersRouter
 usersRouter.route("/register").post(validateRegister, createUser);
 usersRouter
   .route("/:id")
-  .get(checkAuth as any, checkAdmin, getUserById)
+  .get(checkAuth as any, getUserById)
   .put(checkAuth as any, checkAdmin, validateUpdateUser, updateUserById)
   .delete(checkAuth as any, checkAdmin, deleteUser);
 

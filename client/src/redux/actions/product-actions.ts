@@ -70,4 +70,8 @@ const listSingleProduct = (id: string) => async (dispatch: Dispatch) => {
   }
 };
 
-export { listProducts, listSingleProduct };
+const deleteProduct = (token: string, id: string) => async (
+  dispatch: any
+) => {};
+
+export { listProducts, listSingleProduct, deleteProduct };

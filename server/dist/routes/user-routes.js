@@ -17,7 +17,7 @@ usersRouter
 usersRouter.route("/register").post(validation_1.validateRegister, users_controllers_1.createUser);
 usersRouter
     .route("/:id")
-    .get(check_auth_1.default, check_admin_1.default, users_controllers_1.getUserById)
+    .get(check_auth_1.default, users_controllers_1.getUserById)
     .put(check_auth_1.default, check_admin_1.default, validation_1.validateUpdateUser, users_controllers_1.updateUserById)
     .delete(check_auth_1.default, check_admin_1.default, users_controllers_1.deleteUser);
 exports.default = usersRouter;
