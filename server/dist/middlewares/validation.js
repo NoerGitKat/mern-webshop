@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.validateUpdateUser = exports.validateOrder = exports.validateUpdateProfile = exports.validateRegister = exports.validateLogin = void 0;
+exports.validateUpdateProduct = exports.validateNewProduct = exports.validateUpdateUser = exports.validateOrder = exports.validateUpdateProfile = exports.validateRegister = exports.validateLogin = void 0;
 const express_validator_1 = require("express-validator");
 const validateLogin = [
     express_validator_1.check("email").isEmail().withMessage("Fill in a valid email address!"),
@@ -53,3 +53,25 @@ const validateUpdateUser = [
         .withMessage("Fill in a valid username."),
 ];
 exports.validateUpdateUser = validateUpdateUser;
+const validateNewProduct = [
+    express_validator_1.check("name")
+        .isString()
+        .withMessage("Fill in a product name of at least 3 characters."),
+    express_validator_1.check("price").isNumeric().withMessage("Price should be a number."),
+    express_validator_1.check("image").isString().optional({ checkFalsy: true }),
+    express_validator_1.check("brand").isString().withMessage("Brand name should be a string."),
+    express_validator_1.check("category").isString().withMessage("Category should be a string."),
+    express_validator_1.check("description")
+        .isString()
+        .isLength({ min: 6 })
+        .withMessage("Fill in a descroption of at least 6 characters."),
+];
+exports.validateNewProduct = validateNewProduct;
+const validateUpdateProduct = [
+    express_validator_1.check("name")
+        .isString()
+        .isLength({ min: 3 })
+        .withMessage("Fill in a product name of at least 3 characters."),
+    express_validator_1.check("name"),
+];
+exports.validateUpdateProduct = validateUpdateProduct;

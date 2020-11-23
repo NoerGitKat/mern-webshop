@@ -59,10 +59,34 @@ const validateUpdateUser = [
     .withMessage("Fill in a valid username."),
 ];
 
+const validateNewProduct = [
+  check("name")
+    .isString()
+    .withMessage("Fill in a product name of at least 3 characters."),
+  check("price").isNumeric().withMessage("Price should be a number."),
+  check("image").isString().optional({ checkFalsy: true }),
+  check("brand").isString().withMessage("Brand name should be a string."),
+  check("category").isString().withMessage("Category should be a string."),
+  check("description")
+    .isString()
+    .isLength({ min: 6 })
+    .withMessage("Fill in a descroption of at least 6 characters."),
+];
+
+const validateUpdateProduct = [
+  check("name")
+    .isString()
+    .isLength({ min: 3 })
+    .withMessage("Fill in a product name of at least 3 characters."),
+  check("name"),
+];
+
 export {
   validateLogin,
   validateRegister,
   validateUpdateProfile,
   validateOrder,
   validateUpdateUser,
+  validateNewProduct,
+  validateUpdateProduct,
 };
