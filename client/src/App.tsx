@@ -19,6 +19,7 @@ import PlaceOrderPage from "./pages/place-order";
 import UserListPage from "./pages/user-list";
 import UserEditPage from "./pages/user-edit";
 import ProductListPage from "./pages/product-list";
+import ProductEditPage from "./pages/product-edit";
 
 function App(): JSX.Element {
   return (
@@ -38,6 +39,11 @@ function App(): JSX.Element {
           <Route exact path="/admin/users" component={UserListPage} />
           <Route exact path="/admin/products" component={ProductListPage} />
           <Route exact path="/admin/users/:id/edit" component={UserEditPage} />
+          <Route
+            exact
+            path="/admin/products/:id/edit"
+            component={ProductEditPage}
+          />
           <Route exact path="/" component={HomePage} />
         </Switch>
       </Container>

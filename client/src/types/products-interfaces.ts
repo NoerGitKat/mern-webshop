@@ -8,7 +8,7 @@ interface IProduct {
   price: number;
   countInStock: number;
   rating: number;
-  numReviews: number;
+  numReviews?: number;
   qty?: number;
 }
 

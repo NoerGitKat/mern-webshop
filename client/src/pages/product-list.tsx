@@ -61,7 +61,7 @@ const ProductListPage: React.FC<IProductListPageProps> = ({ history }) => {
           <h1>All Products</h1>
         </Col>
         <Col className="text-right">
-          <Button classN ame="my-3">
+          <Button className="my-3">
             <i className="fas fa-plus"></i> Create Product
           </Button>
         </Col>

@@ -1,10 +1,11 @@
-import { ICartAction, IShippingAddress } from "./cart-interfaces";
+import { ICartAction } from "./cart-interfaces";
 import { IOrder, IOrderAction } from "./orders-interfaces";
+import { IProduct } from "./products-interfaces";
 import { IUser } from "./user-interfaces";
 
 interface IInitialState {
   productList: {
-    products: Array<any>;
+    products: IProduct[];
     loading: boolean;
     error: null;
     successDelete: boolean;
@@ -22,6 +23,7 @@ interface IInitialState {
     error: any;
     successDelete: boolean;
   };
+  productDetails: {};
 }
 
 export type { IInitialState };

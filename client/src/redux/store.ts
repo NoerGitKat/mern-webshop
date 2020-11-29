@@ -69,6 +69,19 @@ const initialState: IInitialState = {
   orderPay: { success: false, loading: false, error: null },
   myOrders: { orders: [], loading: false, error: null },
   userList: { users: [], loading: false, error: null, successDelete: false },
+  productDetails: {
+    product: {
+      name: "",
+      image: "",
+      description: "",
+      brand: "",
+      category: "",
+      price: 0,
+      countInStock: 0,
+    },
+    loading: false,
+    error: null,
+  },
 };
 
 const rootReducer: any = combineReducers({
