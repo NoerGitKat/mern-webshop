@@ -14,6 +14,8 @@ const handle_errors_1 = require("./middlewares/handle-errors");
 const user_routes_1 = __importDefault(require("./routes/user-routes"));
 const orders_routes_1 = __importDefault(require("./routes/orders-routes"));
 const config_controller_1 = require("./controllers/config-controller");
+const upload_routes_1 = __importDefault(require("./routes/upload-routes"));
+const path_1 = __importDefault(require("path"));
 const app = express_1.default();
 const PORT = process.env.PORT || 5000;
 // Middlewares
@@ -23,8 +25,10 @@ app.use(express_1.default.json());
 app.use("/api/products", products_router_1.default);
 app.use("/api/users", user_routes_1.default);
 app.use("/api/orders", orders_routes_1.default);
+app.use("/api/upload", upload_routes_1.default);
 // API Keys
 app.use("/api/config/paypal", config_controller_1.getPayPalConfig);
+app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "/uploads")));
 // Error handling
 app.use(handle_errors_1.handleNotFound);
 app.use(handle_errors_1.handleError);
