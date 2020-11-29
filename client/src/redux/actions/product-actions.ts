@@ -177,13 +177,14 @@ const updateProduct = (
         "Content-Type": "application/json",
       },
     };
-    console.log("request is", request);
 
     const response = await fetch(`/api/products/${productId}`, request);
+    const updatedProduct = await response.json();
 
     if (response.ok) {
       const successAction = {
         type: PRODUCT_UPDATE_SUCCESS,
+        payload: updatedProduct,
       };
       dispatch(successAction);
     } else {

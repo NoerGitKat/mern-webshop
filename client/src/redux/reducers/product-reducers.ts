@@ -12,6 +12,9 @@ import {
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_SUCCESS,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_SUCCESS,
 } from "../constants/constants";
 
 const productListReducer = (
@@ -47,7 +50,7 @@ const productListReducer = (
       return { ...state, loading: false, error: action.error };
     case PRODUCT_CREATE_SUCCESS:
       return { ...state, loading: false, successCreate: true };
-    default: 
+    default:
       return state;
   }
 };
@@ -63,6 +66,12 @@ const productDetailsReducer = (
       return { ...state, loading: false, product: action.payload };
     case PRODUCT_DETAILS_FAIL:
       return { ...state, loading: false, error: action.error };
+    case PRODUCT_UPDATE_REQUEST:
+      return { ...state, loading: true };
+    case PRODUCT_UPDATE_FAIL:
+      return { ...state, loading: false, error: action.error };
+    case PRODUCT_UPDATE_SUCCESS:
+      return { ...state, loading: false, product: action.payload };
     default:
       return state;
   }

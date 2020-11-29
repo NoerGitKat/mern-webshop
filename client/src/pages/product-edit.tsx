@@ -64,6 +64,7 @@ const ProductEditPage: React.FC<IProductEditPageProps> = ({
 
     dispatch(
       updateProduct(userDetails.token, productId, {
+        _id: productId,
         name,
         price,
         image,

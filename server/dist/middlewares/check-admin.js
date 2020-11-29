@@ -2,7 +2,6 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const checkAdmin = (req, res, next) => {
     var _a;
-    console.log("req", req.body);
     if ((_a = req.user) === null || _a === void 0 ? void 0 : _a.isAdmin) {
         next();
     }
