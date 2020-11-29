@@ -72,7 +72,7 @@ const CartPage: React.FC<cartProps> = ({ match, history, location }) => {
           <ListGroup variant="flush">
             {cartItems.map((item, index) => {
               return (
-                <ListGroup.Item key={item._id + index}>
+                <ListGroup.Item key={item._id! + index}>
                   <Row>
                     <Col md={2}>
                       <Image src={item.image} alt={item.name} fluid rounded />
@@ -85,7 +85,7 @@ const CartPage: React.FC<cartProps> = ({ match, history, location }) => {
                       <Form.Control
                         as="select"
                         value={item.qty}
-                        onChange={(event) => changeQuantity(event, item._id)}
+                        onChange={(event) => changeQuantity(event, item._id!)}
                       >
                         {[...Array(item.countInStock).keys()].map(
                           (_, index) => (
@@ -100,7 +100,7 @@ const CartPage: React.FC<cartProps> = ({ match, history, location }) => {
                       <Button
                         type="button"
                         variant="light"
-                        onClick={() => removeFromCartHandler(item._id)}
+                        onClick={() => removeFromCartHandler(item._id!)}
                       >
                         <i className="fas fa-trash"></i>
                       </Button>

@@ -89,7 +89,7 @@ const ProductListPage: React.FC<IProductListPageProps> = ({ history }) => {
                 <Button
                   variant="danger"
                   className="btn-sm"
-                  onClick={() => handleDelete(userDetails.token, product._id)}
+                  onClick={() => handleDelete(userDetails.token, product._id!)}
                 >
                   <i className="fas fa-trash"></i>
                 </Button>

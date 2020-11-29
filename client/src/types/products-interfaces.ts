@@ -1,5 +1,5 @@
 interface IProduct {
-  _id: string;
+  _id?: string;
   name: string;
   image: string;
   description: string;
@@ -7,7 +7,7 @@ interface IProduct {
   category: string;
   price: number;
   countInStock: number;
-  rating: number;
+  rating?: number;
   numReviews?: number;
   qty?: number;
 }

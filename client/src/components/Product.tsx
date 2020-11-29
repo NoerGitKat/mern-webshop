@@ -30,7 +30,7 @@ const Product: React.FC<IProduct> = ({
 
         <Card.Text as="div">
           <div className="my-3">
-            <Rating rating={rating} text={` ${numReviews} reviews`} />
+            <Rating rating={rating || 0} text={` ${numReviews} reviews`} />
           </div>
         </Card.Text>
 

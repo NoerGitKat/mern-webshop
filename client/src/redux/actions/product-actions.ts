@@ -13,6 +13,9 @@ import {
   PRODUCT_CREATE_REQUEST,
   PRODUCT_CREATE_FAIL,
   PRODUCT_CREATE_SUCCESS,
+  PRODUCT_UPDATE_REQUEST,
+  PRODUCT_UPDATE_FAIL,
+  PRODUCT_UPDATE_SUCCESS,
 } from "../constants/constants";
 
 const listProducts = () => async (dispatch: Dispatch) => {
@@ -155,40 +158,44 @@ const createProduct = (token: string, productDetails: IProduct) => async (
   }
 };
 
-const updateProduct = (token: string, productDetails: IProduct) => async (
-  dispatch: Dispatch
-) => {
+const updateProduct = (
+  token: string,
+  productId: string,
+  productDetails: IProduct
+) => async (dispatch: Dispatch) => {
   const reqAction = {
-    type: PRODUCT_CREATE_REQUEST,
+    type: PRODUCT_UPDATE_REQUEST,
   };
   dispatch(reqAction);
 
   try {
     const request = {
-      method: "POST",
+      method: "PUT",
       body: JSON.stringify(productDetails),
       headers: {
         Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
       },
     };
+    console.log("request is", request);
 
-    const response = await fetch(`/api/products`, request);
+    const response = await fetch(`/api/products/${productId}`, request);
 
     if (response.ok) {
       const successAction = {
-        type: PRODUCT_CREATE_SUCCESS,
+        type: PRODUCT_UPDATE_SUCCESS,
       };
       dispatch(successAction);
     } else {
       const failAction = {
-        type: PRODUCT_CREATE_FAIL,
-        error: "Couldn't create product, try again later!",
+        type: PRODUCT_UPDATE_FAIL,
+        error: "Couldn't update product, try again later!",
       };
       dispatch(failAction);
     }
   } catch (error) {
     const failAction = {
-      type: PRODUCT_CREATE_FAIL,
+      type: PRODUCT_UPDATE_FAIL,
       error,
     };
     dispatch(failAction);

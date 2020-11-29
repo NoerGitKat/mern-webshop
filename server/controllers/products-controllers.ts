@@ -93,6 +93,11 @@ const createProduct = async (req: Request, res: Response) => {
 // @route PUT /api/products/:id
 // @access Private (admin)
 const updateProduct = async (req: Request, res: Response) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(422).json(errors);
+  }
+
   const { id } = req.params;
   const {
     name,

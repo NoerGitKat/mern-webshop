@@ -85,7 +85,7 @@ const ProductPage: React.FC<ProductProps> = ({
                   </ListGroup.Item>
                   <ListGroup.Item>
                     <Rating
-                      rating={product.rating}
+                      rating={product.rating || 0}
                       text={` ${product.numReviews} reviews`}
                     />
                   </ListGroup.Item>

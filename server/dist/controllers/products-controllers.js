@@ -107,6 +107,10 @@ exports.createProduct = createProduct;
 // @route PUT /api/products/:id
 // @access Private (admin)
 const updateProduct = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const errors = express_validator_1.validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(422).json(errors);
+    }
     const { id } = req.params;
     const { name, price, image, brand, category, countInStock, description, } = req.body;
     try {

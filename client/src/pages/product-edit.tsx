@@ -5,8 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "./../components/Loader";
 import AlertMessage from "./../components/AlertMessage";
 import { IProductDetails } from "../types/products-interfaces";
-import { listSingleProduct } from "../redux/actions/product-actions";
+import {
+  listSingleProduct,
+  updateProduct,
+} from "../redux/actions/product-actions";
 import FormContainer from "../components/FormContainer";
+import { IInitialState } from "../types/main-interfaces";
 
 interface IProductEditPageProps {
   history: {
@@ -37,6 +41,10 @@ const ProductEditPage: React.FC<IProductEditPageProps> = ({
 
   const { product, loading, error } = productDetails;
 
+  const { userDetails } = useSelector(
+    (state: IInitialState) => state.loggedInUser
+  );
+
   useEffect(() => {
     if (!product.name || product._id !== productId) {
       dispatch(listSingleProduct(productId));
@@ -51,10 +59,21 @@ const ProductEditPage: React.FC<IProductEditPageProps> = ({
     }
   }, [history, dispatch, productId, product]);
 
-  const handleSubmit = () => {
-    // Dispatch action to edit product
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
+
+    dispatch(
+      updateProduct(userDetails.token, productId, {
+        name,
+        price,
+        image,
+        brand,
+        category,
+        countInStock,
+        description,
+      })
+    );
   };
-  console.log("product", name);
 
   return (
     <>
@@ -132,7 +151,9 @@ const ProductEditPage: React.FC<IProductEditPageProps> = ({
                 onChange={(e) => setCountInStock(Number(e.target.value))}
               ></Form.Control>
             </Form.Group>
-            <Button variant="primary">Update</Button>
+            <Button variant="primary" type="submit">
+              Update
+            </Button>
           </Form>
         )}
       </FormContainer>
