@@ -22,6 +22,7 @@ interface IProductDetails {
   product: IProduct;
   loading: boolean;
   error: any;
+  successCreate?: boolean;
 }
 
 interface IProductList {

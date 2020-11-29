@@ -72,6 +72,12 @@ const productDetailsReducer = (
       return { ...state, loading: false, error: action.error };
     case PRODUCT_UPDATE_SUCCESS:
       return { ...state, loading: false, product: action.payload };
+    case PRODUCT_CREATE_REQUEST:
+      return { ...state, loading: true };
+    case PRODUCT_CREATE_FAIL:
+      return { ...state, loading: false, error: action.error };
+    case PRODUCT_CREATE_SUCCESS:
+      return { ...state, loading: false, successCreate: true };
     default:
       return state;
   }

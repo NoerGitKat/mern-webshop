@@ -12,6 +12,7 @@ import {
 import { logUserOut } from "../redux/actions/user-actions";
 import { IInitialState } from "../types/main-interfaces";
 import { IProduct, IProductList } from "../types/products-interfaces";
+import { Link } from "react-router-dom";
 
 interface IProductListPageProps {
   history: {
@@ -50,10 +51,6 @@ const ProductListPage: React.FC<IProductListPageProps> = ({ history }) => {
       dispatch(deleteProduct(token, id));
   };
 
-  const createNewProduct = (token: string, productDetails: IProduct) => {
-    dispatch(createProduct(token, productDetails));
-  };
-
   return (
     <>
       <Row className="align-items-center">
@@ -61,9 +58,11 @@ const ProductListPage: React.FC<IProductListPageProps> = ({ history }) => {
           <h1>All Products</h1>
         </Col>
         <Col className="text-right">
-          <Button className="my-3">
-            <i className="fas fa-plus"></i> Create Product
-          </Button>
+          <Link to="/admin/products/new">
+            <Button className="my-3">
+              <i className="fas fa-plus"></i> Create Product
+            </Button>
+          </Link>
         </Col>
       </Row>
 

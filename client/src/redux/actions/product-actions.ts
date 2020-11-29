@@ -132,6 +132,7 @@ const createProduct = (token: string, productDetails: IProduct) => async (
       body: JSON.stringify(productDetails),
       headers: {
         Authorization: `Bearer ${token}`,
+        'Content-Type': 'application/json'
       },
     };
 

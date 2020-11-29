@@ -20,6 +20,7 @@ import UserListPage from "./pages/user-list";
 import UserEditPage from "./pages/user-edit";
 import ProductListPage from "./pages/product-list";
 import ProductEditPage from "./pages/product-edit";
+import ProductCreatePage from "./pages/product-create";
 
 function App(): JSX.Element {
   return (
@@ -38,6 +39,11 @@ function App(): JSX.Element {
           <Route exact path="/cart/:id?" component={CartPage} />
           <Route exact path="/admin/users" component={UserListPage} />
           <Route exact path="/admin/products" component={ProductListPage} />
+          <Route
+            exact
+            path="/admin/products/new"
+            component={ProductCreatePage}
+          />
           <Route exact path="/admin/users/:id/edit" component={UserEditPage} />
           <Route
             exact

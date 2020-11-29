@@ -7,19 +7,19 @@ import AlertMessage from "./../components/AlertMessage";
 import { IProductDetails } from "../types/products-interfaces";
 import {
   listSingleProduct,
-  updateProduct,
+  createProduct,
 } from "../redux/actions/product-actions";
 import FormContainer from "../components/FormContainer";
 import { IInitialState } from "../types/main-interfaces";
 
-interface IProductEditPageProps {
+interface IProductCreatePageProps {
   history: {
     push(url: string): void;
   };
   match: { params: { id: string } };
 }
 
-const ProductEditPage: React.FC<IProductEditPageProps> = ({
+const ProductCreatePage: React.FC<IProductCreatePageProps> = ({
   history,
   match,
 }) => {
@@ -39,31 +39,23 @@ const ProductEditPage: React.FC<IProductEditPageProps> = ({
     (state: { productDetails: IProductDetails }) => state.productDetails
   );
 
-  const { product, loading, error } = productDetails;
+  const { product, loading, error, successCreate } = productDetails;
 
   const { userDetails } = useSelector(
     (state: IInitialState) => state.loggedInUser
   );
 
   useEffect(() => {
-    if (!product.name || product._id !== productId) {
-      dispatch(listSingleProduct(productId));
-    } else {
-      setName(product.name);
-      setDescription(product.description);
-      setPrice(product.price);
-      setBrand(product.brand);
-      setCategory(product.category);
-      setCountInStock(product.countInStock);
-      setDescription(product.description);
+    if (successCreate) {
+      history.push("/admin/products");
     }
-  }, [history, dispatch, productId, product]);
+  }, [history, dispatch, successCreate]);
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
 
     dispatch(
-      updateProduct(userDetails.token, productId, {
+      createProduct(userDetails.token, {
         _id: productId,
         name,
         price,
@@ -82,7 +74,7 @@ const ProductEditPage: React.FC<IProductEditPageProps> = ({
         Go Back
       </Link>
       <FormContainer>
-        <h1>Edit Product</h1>
+        <h1>Create Product</h1>
         {loading && !product ? (
           <Loader />
         ) : error ? (
@@ -162,4 +154,4 @@ const ProductEditPage: React.FC<IProductEditPageProps> = ({
   );
 };
 
-export default ProductEditPage;
+export default ProductCreatePage;
