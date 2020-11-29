@@ -9,6 +9,9 @@ import {
   PRODUCT_DELETE_FAIL,
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_SUCCESS,
 } from "../constants/constants";
 
 const productListReducer = (
@@ -28,6 +31,7 @@ const productListReducer = (
         loading: false,
         products: action.payload,
         successDelete: false,
+        successCreate: false,
       };
     case PRODUCT_LIST_FAIL:
       return { ...state, loading: false, error: action.error };
@@ -37,7 +41,13 @@ const productListReducer = (
       return { ...state, loading: false, successDelete: true };
     case PRODUCT_DELETE_FAIL:
       return { ...state, loading: false, error: action.error };
-    default:
+    case PRODUCT_CREATE_REQUEST:
+      return { ...state, loading: true };
+    case PRODUCT_CREATE_FAIL:
+      return { ...state, loading: false, error: action.error };
+    case PRODUCT_CREATE_SUCCESS:
+      return { ...state, loading: false, successCreate: true };
+    default: 
       return state;
   }
 };

@@ -9,6 +9,10 @@ import {
   PRODUCT_DETAILS_FAIL,
   PRODUCT_DELETE_REQUEST,
   PRODUCT_DELETE_SUCCESS,
+  PRODUCT_DELETE_FAIL,
+  PRODUCT_CREATE_REQUEST,
+  PRODUCT_CREATE_FAIL,
+  PRODUCT_CREATE_SUCCESS,
 } from "../constants/constants";
 
 const listProducts = () => async (dispatch: Dispatch) => {
@@ -72,7 +76,9 @@ const listSingleProduct = (id: string) => async (dispatch: Dispatch) => {
   }
 };
 
-const deleteProduct = (token: string, id: string) => async (dispatch: any) => {
+const deleteProduct = (token: string, id: string) => async (
+  dispatch: Dispatch
+) => {
   const reqAction = {
     type: PRODUCT_DELETE_REQUEST,
   };
@@ -95,18 +101,104 @@ const deleteProduct = (token: string, id: string) => async (dispatch: any) => {
       dispatch(successAction);
     } else {
       const failAction = {
-        type: PRODUCT_DETAILS_FAIL,
+        type: PRODUCT_DELETE_FAIL,
         error: "Couldn't delete product, try again later!",
       };
       dispatch(failAction);
     }
   } catch (error) {
     const failAction = {
-      type: PRODUCT_DETAILS_FAIL,
+      type: PRODUCT_DELETE_FAIL,
       error,
     };
     dispatch(failAction);
   }
 };
 
-export { listProducts, listSingleProduct, deleteProduct };
+const createProduct = (token: string, productDetails: IProduct) => async (
+  dispatch: Dispatch
+) => {
+  const reqAction = {
+    type: PRODUCT_CREATE_REQUEST,
+  };
+  dispatch(reqAction);
+
+  try {
+    const request = {
+      method: "POST",
+      body: JSON.stringify(productDetails),
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await fetch(`/api/products`, request);
+
+    if (response.ok) {
+      const successAction = {
+        type: PRODUCT_CREATE_SUCCESS,
+      };
+      dispatch(successAction);
+    } else {
+      const failAction = {
+        type: PRODUCT_CREATE_FAIL,
+        error: "Couldn't create product, try again later!",
+      };
+      dispatch(failAction);
+    }
+  } catch (error) {
+    const failAction = {
+      type: PRODUCT_CREATE_FAIL,
+      error,
+    };
+    dispatch(failAction);
+  }
+};
+
+const updateProduct = (token: string, productDetails: IProduct) => async (
+  dispatch: Dispatch
+) => {
+  const reqAction = {
+    type: PRODUCT_CREATE_REQUEST,
+  };
+  dispatch(reqAction);
+
+  try {
+    const request = {
+      method: "POST",
+      body: JSON.stringify(productDetails),
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
+    const response = await fetch(`/api/products`, request);
+
+    if (response.ok) {
+      const successAction = {
+        type: PRODUCT_CREATE_SUCCESS,
+      };
+      dispatch(successAction);
+    } else {
+      const failAction = {
+        type: PRODUCT_CREATE_FAIL,
+        error: "Couldn't create product, try again later!",
+      };
+      dispatch(failAction);
+    }
+  } catch (error) {
+    const failAction = {
+      type: PRODUCT_CREATE_FAIL,
+      error,
+    };
+    dispatch(failAction);
+  }
+};
+
+export {
+  listProducts,
+  listSingleProduct,
+  deleteProduct,
+  createProduct,
+  updateProduct,
+};

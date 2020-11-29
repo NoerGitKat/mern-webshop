@@ -41,6 +41,7 @@ const initialState: IInitialState = {
     loading: false,
     error: null,
     successDelete: false,
+    successCreate: false,
   },
   loggedInUser: { userDetails: userDetailsFromLS, loading: false, error: null },
   profile: {

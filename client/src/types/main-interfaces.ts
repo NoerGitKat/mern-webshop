@@ -8,6 +8,7 @@ interface IInitialState {
     loading: boolean;
     error: null;
     successDelete: boolean;
+    successCreate: boolean;
   };
   loggedInUser: { userDetails: IUser; loading: boolean; error: any };
   profile: { userProfile: IUser; loading: boolean; error: any };

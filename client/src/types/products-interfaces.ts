@@ -29,6 +29,7 @@ interface IProductList {
   loading: boolean;
   error: any;
   successDelete: boolean;
+  successCreate: boolean;
 }
 
 export type { IProduct, IProductAction, IProductDetails, IProductList };
