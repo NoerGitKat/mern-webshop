@@ -25,7 +25,7 @@ app.use(express.json());
 app.use("/api/products", productsRouter);
 app.use("/api/users", usersRouter);
 app.use("/api/orders", ordersRouter);
-app.use("/api/upload", uploadRouter);
+app.use("/api/uploads", uploadRouter);
 
 // API Keys
 app.use("/api/config/paypal", getPayPalConfig);

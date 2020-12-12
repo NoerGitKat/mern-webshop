@@ -25,7 +25,7 @@ app.use(express_1.default.json());
 app.use("/api/products", products_router_1.default);
 app.use("/api/users", user_routes_1.default);
 app.use("/api/orders", orders_routes_1.default);
-app.use("/api/upload", upload_routes_1.default);
+app.use("/api/uploads", upload_routes_1.default);
 // API Keys
 app.use("/api/config/paypal", config_controller_1.getPayPalConfig);
 app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "/uploads")));
